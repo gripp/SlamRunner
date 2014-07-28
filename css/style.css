@@ -3,9 +3,11 @@
  * http://design-seeds.com/index.php/home/entry/building-brights
  */ 
 
+@import url(http://fonts.googleapis.com/css?family=Domine:400,700);
 html, body {
   background-color: #addde3;
   color: #705d70;
+  font-family: 'Domine', 'Arial', sans-serif;
   font-size: 18px;
   margin: 0;
   padding: 0;
