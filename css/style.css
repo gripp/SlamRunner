@@ -21,6 +21,17 @@ button, input.score {
   font-size: 1em;
   margin: 5px;
   padding: 10px;
+}
+
+button {
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #1b90de;
+}
+
+input.score {
   width: 50px;
 }
 
@@ -32,7 +43,8 @@ span#total-score {
   font-weight: bold;
 }
 
-div#timer {
+span#timer-face {
   font-size: 2em;
+  margin: 5px;
   vertical-align: middle;
 }
