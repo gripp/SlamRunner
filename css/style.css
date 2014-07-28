@@ -28,3 +28,8 @@ input.input-error {
 span#total-score {
   font-weight: bold;
 }
+
+span#timer {
+  font-size: 2em;
+  vertical-align: middle;
+}
