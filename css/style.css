@@ -1,0 +1,30 @@
+/*
+ * For the SlamRunner color pallete, go to:
+ * http://design-seeds.com/index.php/home/entry/building-brights
+ */ 
+
+html, body {
+  background-color: #addde3;
+  color: #705d70;
+  font-size: 18px;
+  margin: 0;
+  padding: 0;
+}
+
+input.score {
+  background-color: #f2eae1;
+  border: 1px solid #705d70;
+  border-radius: 2px;
+  font-size: 1em;
+  margin: 5px;
+  padding: 10px;
+  width: 50px;
+}
+
+input.input-error {
+  border-color: #fa2c25;
+}
+
+span#total-score {
+  font-weight: bold;
+}
