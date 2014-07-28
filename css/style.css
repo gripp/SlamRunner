@@ -4,6 +4,7 @@
  */ 
 
 @import url(http://fonts.googleapis.com/css?family=Domine:400,700);
+
 html, body {
   background-color: #addde3;
   color: #705d70;
@@ -13,7 +14,7 @@ html, body {
   padding: 0;
 }
 
-input.score {
+button, input.score {
   background-color: #f2eae1;
   border: 1px solid #705d70;
   border-radius: 2px;
@@ -31,7 +32,7 @@ span#total-score {
   font-weight: bold;
 }
 
-span#timer {
+div#timer {
   font-size: 2em;
   vertical-align: middle;
 }

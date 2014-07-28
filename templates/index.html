@@ -9,37 +9,7 @@
         type="text/javascript"></script>
   </head>
   <body>
-    <input
-        class="score"
-        maxlength="4"
-        onchange="validateScores();"
-        type="text"
-        value="0.0" />
-    <input
-        class="score"
-        maxlength="4"
-        onchange="validateScores();"
-        type="text"
-        value="0.0" />
-     <input
-        class="score"
-        maxlength="4"
-        onchange="validateScores();"
-        type="text"
-        value="0.0" />
-     <input
-        class="score"
-        maxlength="4"
-        onchange="validateScores();"
-        type="text"
-        value="0.0" />
-     <input
-        class="score"
-        maxlength="4"
-        onchange="validateScores();"
-        type="text"
-        value="0.0" />
-     <span id="total-score">0.0</span>
+     {% include "templates/scoreCalc.html" %}
      {% include "templates/timer.html" %}
   </body>
 </html>
