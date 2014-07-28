@@ -44,7 +44,9 @@ span#total-score {
 }
 
 span#timer-face {
+  display: inline-block;
   font-size: 2em;
   margin: 5px;
   vertical-align: middle;
+  width: 200px;
 }
