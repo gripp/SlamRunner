@@ -14,10 +14,12 @@ html, body {
   padding: 0;
 }
 
-button, input.score {
+button, input, select {
   background-color: #f2eae1;
   border: 1px solid #705d70;
   border-radius: 2px;
+  box-sizing: border-box;
+  font-family: inherit;
   font-size: 1em;
   margin: 5px;
   padding: 10px;
@@ -32,7 +34,8 @@ button:hover {
 }
 
 input.score {
-  width: 50px;
+  text-align: center;
+  width: 65px;
 }
 
 input.input-error {
@@ -49,4 +52,25 @@ span#timer-face {
   margin: 5px;
   vertical-align: middle;
   width: 200px;
+}
+
+div#poet-list {
+  float: left;
+  position: relative;
+}
+
+select#poet-list-select, input#poet-name-input {
+  display: block;
+  width: 250px;
+}
+
+button.poet-list-button {
+  height: 50px;
+  margin-top: 0;
+  width: 50px;
+}
+
+button#remove-poet-button {
+  position: absolute;
+  right: 0;
 }
