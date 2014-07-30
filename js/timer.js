@@ -10,7 +10,7 @@ var CssName_ = {
 };
 
 
-function startStopTimer() {
+var startStopTimer = function() {
   if (!startTime) {
     startTime = new Date();
     document.getElementById(
@@ -25,10 +25,10 @@ function startStopTimer() {
     document.getElementById(
         CssName_.START_STOP_BUTTON).textContent = START_LABEL_;
   }
-}
+};
 
 
-function updateTimerFace_() {
+var updateTimerFace_ = function() {
   var time;
 
   if (startTime) {
@@ -51,18 +51,18 @@ function updateTimerFace_() {
   document.getElementById(
       CssName_.TIMER_FACE).textContent =
           minutes + ":" + seconds + "." + milliseconds;
-}
+};
 
 
-function resetTimer() {
+var resetTimer = function() {
   startTime = null;
   stopTime = null;
   updateTimerFace_();
-}
+};
 
 
-function tick() {
+var tick = function() {
   if (startTime && !stopTime) {
     updateTimerFace_();
   }
-}
+};

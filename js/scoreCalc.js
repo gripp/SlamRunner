@@ -5,7 +5,7 @@ var CssNames_  = {
 };
 
 
-function validateScores() {
+var validateScores = function() {
   var allScoresValid = true;
 
   var max = 0;
@@ -33,4 +33,4 @@ function validateScores() {
     var totalScoreLabel = document.getElementById(CssNames_.TOTAL_SCORE);
     totalScoreLabel.textContent = Number(total - max - min).toFixed(1);
   }
-}
+};
