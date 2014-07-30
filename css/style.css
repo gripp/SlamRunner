@@ -54,6 +54,10 @@ span#timer-face {
   width: 200px;
 }
 
+span.timer-face-error {
+  color: #fa2c25;
+}
+
 div#poet-list {
   float: left;
   position: relative;

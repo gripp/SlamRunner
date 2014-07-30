@@ -5,6 +5,12 @@ var CssNames_  = {
 };
 
 
+var tick = function() {
+  validateScores();
+  timerTick();
+};
+
+
 var validateScores = function() {
   var allScoresValid = true;
 
@@ -24,13 +30,12 @@ var validateScores = function() {
       min = score < min ? score : min;
       total += score;
 
-      scoreInput.value = score.toFixed(1);
       scoreInput.className = CssNames_.SCORE;
     }
   }
 
   if (allScoresValid) {
     var totalScoreLabel = document.getElementById(CssNames_.TOTAL_SCORE);
-    totalScoreLabel.textContent = Number(total - max - min).toFixed(1);
+    totalScoreLabel.textContent = Number(total - max - min - getTimePenalty()).toFixed(1);
   }
 };
