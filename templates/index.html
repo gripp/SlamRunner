@@ -1,19 +1,4 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <title>SlamRunner</title>
-    <link href='/css/style.css' rel='stylesheet' type='text/css'>
-    <script
-        language="javascript"
-        src="/js/timer.js"
-        type="text/javascript"></script>
-    <script
-        language="javascript"
-        src="/js/scoreCalc.js"
-        type="text/javascript"></script>
-   </head>
-  <body>
-     {% include "templates/scoreCalc.html" %}
-     {% include "templates/timer.html" %}
-  </body>
-</html>
+{% include "templates/header.html" %}
+{% include "templates/scoreCalc.html" %}
+{% include "templates/timer.html" %}
+{% include "templates/footer.html" %}
