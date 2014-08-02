@@ -1,6 +1,3 @@
-var SlamRunner = {};
-
-
 SlamRunner.Referee = function() {
   this.poetList_ = new SlamRunner.PoetList();
   this.scoreCalculator_ = new SlamRunner.ScoreCalculator();
