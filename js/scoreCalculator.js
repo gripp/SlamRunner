@@ -1,21 +1,21 @@
-var ScoreCalculator = function() {
-  this.timer_ = new Timer();
+SlamRunner.ScoreCalculator = function() {
+  this.timer_ = new SlamRunner.Timer();
 };
 
 
-ScoreCalculator.CssNames_  = {
+SlamRunner.ScoreCalculator.CssNames_  = {
   INPUT_ERROR: 'input-error',
   SCORE: 'score',
   TOTAL_SCORE: 'total-score',
 };
 
 
-ScoreCalculator.prototype.tickTimer = function() {
+SlamRunner.ScoreCalculator.prototype.tickTimer = function() {
   this.timer_.tick();
 };
 
 
-ScoreCalculator.prototype.validateScores = function() {
+SlamRunner.ScoreCalculator.prototype.validateScores = function() {
   var allScoresValid = true;
 
   var max = 0;

@@ -1,17 +1,20 @@
-var Referee = function() {
-  this.poetList_ = new PoetList();
-  this.scoreCalculator_ = new ScoreCalculator();
+var SlamRunner = {};
+
+
+SlamRunner.Referee = function() {
+  this.poetList_ = new SlamRunner.PoetList();
+  this.scoreCalculator_ = new SlamRunner.ScoreCalculator();
 
   setInterval(this.tick_.bind(this), 1);
 };
 
 
-Referee.prototype.tick_ = function() {
+SlamRunner.Referee.prototype.tick_ = function() {
   this.scoreCalculator_.validateScores();
   this.scoreCalculator_.tickTimer();
 };
 
 
-var init = function() {
-  new Referee();
+SlamRunner.init = function() {
+  new SlamRunner.Referee();
 };

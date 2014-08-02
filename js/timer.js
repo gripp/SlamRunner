@@ -1,4 +1,4 @@
-var Timer = function() {
+SlamRunner.Timer = function() {
   this.startTime_ = null;
   this.stopTime_ = null;
 
@@ -6,14 +6,14 @@ var Timer = function() {
 };
 
 
-Timer.START_LABEL_ = 'Start';
-Timer.STOP_LABEL_ = 'Stop';
-Timer.TIME_LIMIT_ = .5 * 60 * 1000; // 3 minutes in ms.
-Timer.PENALTY_PERIOD_ = 10 * 1000; // 10 seconds in ms.
-Timer.POINTS_LOST_PER_PENALTY_PERIOD_ = .5;
+SlamRunner.Timer.START_LABEL_ = 'Start';
+SlamRunner.Timer.STOP_LABEL_ = 'Stop';
+SlamRunner.Timer.TIME_LIMIT_ = .5 * 60 * 1000; // 3 minutes in ms.
+SlamRunner.Timer.PENALTY_PERIOD_ = 10 * 1000; // 10 seconds in ms.
+SlamRunner.Timer.POINTS_LOST_PER_PENALTY_PERIOD_ = .5;
 
 
-Timer.CssName_ = {
+SlamRunner.Timer.CssName_ = {
   RESET_BUTTON: 'reset-button',
   START_STOP_BUTTON: 'start-stop-button',
   TIMER_FACE: 'timer-face',
@@ -21,36 +21,40 @@ Timer.CssName_ = {
 };
 
 
-Timer.prototype.registerListeners_ = function() {
+SlamRunner.Timer.prototype.registerListeners_ = function() {
   document.getElementById(
-      Timer.CssName_.RESET_BUTTON).onclick = this.resetTimer_.bind(this);
+      SlamRunner.Timer.CssName_.RESET_BUTTON).onclick =
+          this.resetTimer_.bind(this);
   document.getElementById(
-      Timer.CssName_.START_STOP_BUTTON).onclick = this.startStopTimer_.bind(
-          this);
+      SlamRunner.Timer.CssName_.START_STOP_BUTTON).onclick =
+          this.startStopTimer_.bind(this);
 };
 
 
-Timer.prototype.startStopTimer_ = function() {
+SlamRunner.Timer.prototype.startStopTimer_ = function() {
   if (!this.startTime_) {
     this.startTime_ = new Date();
     document.getElementById(
-        Timer.CssName_.START_STOP_BUTTON).textContent = Timer.STOP_LABEL_;
+        SlamRunner.Timer.CssName_.START_STOP_BUTTON).textContent =
+            SlamRunner.Timer.STOP_LABEL_;
   } else if (this.stopTime_) {
     this.startTime_ =
         new Date(Math.abs(new Date() - (this.stopTime_ - this.startTime_)));
     this.stopTime_ = null;
     document.getElementById(
-        Timer.CssName_.START_STOP_BUTTON).textContent = Timer.STOP_LABEL_;
+        SlamRunner.Timer.CssName_.START_STOP_BUTTON).textContent =
+            SlamRunner.Timer.STOP_LABEL_;
   } else {
     this.updateTimerFace_();
     this.stopTime_ = new Date();
     document.getElementById(
-        Timer.CssName_.START_STOP_BUTTON).textContent = Timer.START_LABEL_;
+        SlamRunner.Timer.CssName_.START_STOP_BUTTON).textContent =
+            SlamRunner.Timer.START_LABEL_;
   }
 };
 
 
-Timer.prototype.updateTimerFace_ = function() {
+SlamRunner.Timer.prototype.updateTimerFace_ = function() {
   var time;
 
   if (this.startTime_) {
@@ -70,40 +74,41 @@ Timer.prototype.updateTimerFace_ = function() {
     milliseconds = "0" + milliseconds;
   }
 
-  var timerFace = document.getElementById(Timer.CssName_.TIMER_FACE);
+  var timerFace = document.getElementById(SlamRunner.Timer.CssName_.TIMER_FACE);
   timerFace.textContent = minutes + ":" + seconds + "." + milliseconds;
   timerFace.className =
-      this.getTimePenalty() ? Timer.CssName_.TIMER_FACE_ERROR : '';
+      this.getTimePenalty() ? SlamRunner.Timer.CssName_.TIMER_FACE_ERROR : '';
 };
 
 
-Timer.prototype.resetTimer_ = function() {
+SlamRunner.Timer.prototype.resetTimer_ = function() {
   this.startTime_ = null;
   this.stopTime_ = null;
   this.updateTimerFace_();
 };
 
 
-Timer.prototype.tick = function() {
+SlamRunner.Timer.prototype.tick = function() {
   if (this.startTime_ && !this.stopTime_) {
     this.updateTimerFace_();
   }
 };
 
 
-Timer.prototype.getTimePenalty = function() {
+SlamRunner.Timer.prototype.getTimePenalty = function() {
   if (!this.startTime_) {
     return 0;
   }
 
   var endTime = !this.stopTime_ ? new Date() : this.stopTime_;
-  var timeOver = Math.abs(endTime - this.startTime_) - Timer.TIME_LIMIT_;
+  var timeOver = Math.abs(
+      endTime - this.startTime_) - SlamRunner.Timer.TIME_LIMIT_;
 
-  if (timeOver <= Timer.PENALTY_PERIOD_) {
+  if (timeOver <= SlamRunner.Timer.PENALTY_PERIOD_) {
     return 0;
   } else {
     return (
-        Timer.POINTS_LOST_PER_PENALTY_PERIOD_ * Math.floor(
-            timeOver / Timer.PENALTY_PERIOD_));
+        SlamRunner.Timer.POINTS_LOST_PER_PENALTY_PERIOD_ * Math.floor(
+            timeOver / SlamRunner.Timer.PENALTY_PERIOD_));
   }
 };

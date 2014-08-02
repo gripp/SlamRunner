@@ -1,9 +1,9 @@
-var PoetList = function() {
+SlamRunner.PoetList = function() {
   this.registerListeners_()
 };
 
 
-PoetList.CssName_ = {
+SlamRunner.PoetList.CssName_ = {
   ADD_POET_BUTTON: 'add-poet-button',
   POET_NAME_INPUT: 'poet-name-input',
   POET_NAME_SELECT: 'poet-select',
@@ -11,20 +11,21 @@ PoetList.CssName_ = {
 };
 
 
-PoetList.prototype.registerListeners_ = function() {
+SlamRunner.PoetList.prototype.registerListeners_ = function() {
   document.getElementById(
-      PoetList.CssName_.ADD_POET_BUTTON).onclick = this.addPoet_.bind(this);
+      SlamRunner.PoetList.CssName_.ADD_POET_BUTTON).onclick =
+          this.addPoet_.bind(this);
   document.getElementById(
-      PoetList.CssName_.REMOVE_POET_BUTTON).onclick = this.removePoet_.bind(
-          this);
+      SlamRunner.PoetList.CssName_.REMOVE_POET_BUTTON).onclick =
+          this.removePoet_.bind(this);
 };
 
 
-PoetList.prototype.addPoet_ = function() {
+SlamRunner.PoetList.prototype.addPoet_ = function() {
   var poetNameInput = document.getElementById(
-      PoetList.CssName_.POET_NAME_INPUT);
+      SlamRunner.PoetList.CssName_.POET_NAME_INPUT);
   var poetNameSelect = document.getElementById(
-      PoetList.CssName_.POET_NAME_SELECT);
+      SlamRunner.PoetList.CssName_.POET_NAME_SELECT);
   var poetName = poetNameInput.value.trim();
 
   if (!poetName) {
@@ -39,9 +40,9 @@ PoetList.prototype.addPoet_ = function() {
 };
 
 
-PoetList.prototype.removePoet_ = function() {
+SlamRunner.PoetList.prototype.removePoet_ = function() {
   var poetNameSelect = document.getElementById(
-      PoetList.CssName_.POET_NAME_SELECT);
+      SlamRunner.PoetList.CssName_.POET_NAME_SELECT);
   var selectedIndex = poetNameSelect.selectedIndex;
   poetNameSelect.remove(selectedIndex);
   selectedIndex = Math.max(0, selectedIndex);
