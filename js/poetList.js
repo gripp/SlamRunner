@@ -19,3 +19,13 @@ var addPoet = function() {
   newPoetOption.textContent = poetName;
   poetNameSelect.appendChild(newPoetOption); 
 };
+
+
+var removePoet = function() {
+  var poetNameSelect = document.getElementById(CssName_.POET_NAME_SELECT);
+  var selectedIndex = poetNameSelect.selectedIndex;
+  poetNameSelect.remove(selectedIndex);
+  selectedIndex = Math.max(0, selectedIndex);
+  selectedIndex = Math.min(selectedIndex, poetNameSelect.length - 1);
+  poetNameSelect.selectedIndex = selectedIndex;
+};
