@@ -3,7 +3,7 @@
  * http://design-seeds.com/index.php/home/entry/building-brights
  */ 
 
-@import url(http://fonts.googleapis.com/css?family=Domine:400,700);
+/* @import url(http://fonts.googleapis.com/css?family=Domine:400,700); */
 
 html, body {
   background-color: #addde3;
@@ -63,7 +63,7 @@ div#poet-list {
   position: relative;
 }
 
-select#poet-list-select, input#poet-name-input {
+select#poet-select, input#poet-name-input {
   display: block;
   width: 250px;
 }
@@ -74,7 +74,7 @@ button.poet-list-button {
   width: 50px;
 }
 
-button#remove-poet-button {
+button#add-poet-button {
   position: absolute;
   right: 0;
 }
