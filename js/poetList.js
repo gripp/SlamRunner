@@ -88,3 +88,18 @@ SlamRunner.PoetList.prototype.updateSelection_ = function(opt_selectedIndex) {
   poetNameSelect.selectedIndex = selectedIndex;
   this.getSelectElement().dispatchEvent(new Event('onchange'));
 };
+
+
+SlamRunner.PoetList.prototype.getPoetList = function() {
+  var poetNameSelect = this.getSelectElement(); 
+  var poetList = [];
+  for (var i = 0; i < poetNameSelect.length; i++) {
+    poetList.push(poetNameSelect.options[i].value.toLowerCase());
+  }
+  return poetList;
+};
+
+
+SlamRunner.PoetList.prototype.getCurrentPoetIndex = function(enabled) {
+  return this.getSelectElement().selectedIndex;
+};

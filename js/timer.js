@@ -124,3 +124,11 @@ SlamRunner.Timer.prototype.dispatchChange_ = function() {
 SlamRunner.Timer.prototype.getElement = function() {
   return document.getElementById(SlamRunner.Timer.CssName_.TIMER_FACE);
 };
+
+
+SlamRunner.Timer.prototype.setEnabled = function(enabled) {
+  document.getElementById(
+      SlamRunner.Timer.CssName_.RESET_BUTTON).disabled = !enabled;
+  document.getElementById(
+      SlamRunner.Timer.CssName_.START_STOP_BUTTON).disabled = !enabled;
+};

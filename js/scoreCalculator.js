@@ -1,5 +1,15 @@
 SlamRunner.ScoreCalculator = function() {
   this.timer_ = new SlamRunner.Timer();
+  this.scores_ = [];
+
+  for (
+      var i = 0;
+      i < document.getElementsByClassName(
+          SlamRunner.ScoreCalculator.CssName_.SCORE).length;
+      i++) {
+    this.scores_[i] = 0;
+  }
+ 
   this.registerListeners_();
 };
 
@@ -62,6 +72,7 @@ SlamRunner.ScoreCalculator.prototype.validateScores = function() {
       min = score < min ? score : min;
       total += score;
 
+      this.scores_[i] = score;
       scoreInput.className = SlamRunner.ScoreCalculator.CssName_.SCORE;
     }
   }
@@ -71,5 +82,35 @@ SlamRunner.ScoreCalculator.prototype.validateScores = function() {
         SlamRunner.ScoreCalculator.CssName_.TOTAL_SCORE);
     totalScoreLabel.textContent = Number(
         total - max - min - this.timer_.getTimePenalty()).toFixed(1);
+  }
+};
+
+
+SlamRunner.ScoreCalculator.prototype.setEnabled = function(enabled) {
+  var scoreInputs = document.getElementsByClassName(
+      SlamRunner.ScoreCalculator.CssName_.SCORE);
+  for (var i = 0; i < scoreInputs.length; i++) {
+    scoreInputs[i].disabled = !enabled;
+  }
+  this.timer_.setEnabled(enabled);
+};
+
+
+SlamRunner.ScoreCalculator.prototype.getScores = function() {
+  return this.scores_;
+};
+
+
+SlamRunner.ScoreCalculator.prototype.setScores = function(scores) {
+  var scoreInputs = document.getElementsByClassName(
+      SlamRunner.ScoreCalculator.CssName_.SCORE);
+  if (scores.length != scoreInputs.length) {
+    return;
+  }
+
+  this.scores_ = [];
+  for (var i = 0; i < scoreInputs.length; i++) {
+    scoreInputs[i].value = scores[i];
+    this.scores_.push(scores[i]);
   }
 };
