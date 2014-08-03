@@ -11,6 +11,9 @@ SlamRunner.PoetList.CssName_ = {
 };
 
 
+SlamRunner.PoetList.ENTER_BUTTON_ = 13;
+
+
 SlamRunner.PoetList.prototype.registerListeners_ = function() {
   document.getElementById(
       SlamRunner.PoetList.CssName_.ADD_POET_BUTTON).onclick =
@@ -18,14 +21,28 @@ SlamRunner.PoetList.prototype.registerListeners_ = function() {
   document.getElementById(
       SlamRunner.PoetList.CssName_.REMOVE_POET_BUTTON).onclick =
           this.removePoet_.bind(this);
+  document.getElementById(
+      SlamRunner.PoetList.CssName_.POET_NAME_INPUT).onkeypress =
+          function(e) {
+            if (e.keyCode == SlamRunner.PoetList.ENTER_BUTTON_) {
+              this.addPoet_();
+            }
+          }.bind(this);
+  this.getSelectElement().onchange = function() {
+    this.getSelectElement().dispatchEvent(new Event('onchange'));
+  }.bind(this);
+};
+
+
+SlamRunner.PoetList.prototype.getSelectElement = function() {
+  return document.getElementById(SlamRunner.PoetList.CssName_.POET_NAME_SELECT);
 };
 
 
 SlamRunner.PoetList.prototype.addPoet_ = function() {
   var poetNameInput = document.getElementById(
       SlamRunner.PoetList.CssName_.POET_NAME_INPUT);
-  var poetNameSelect = document.getElementById(
-      SlamRunner.PoetList.CssName_.POET_NAME_SELECT);
+  var poetNameSelect = this.getSelectElement(); 
   var poetName = poetNameInput.value.trim();
 
   if (!poetName) {
@@ -37,15 +54,24 @@ SlamRunner.PoetList.prototype.addPoet_ = function() {
   newPoetOption.value = poetName;
   newPoetOption.textContent = poetName;
   poetNameSelect.appendChild(newPoetOption); 
+  poetNameInput.focus();
+  this.updateSelection_();
 };
 
 
 SlamRunner.PoetList.prototype.removePoet_ = function() {
-  var poetNameSelect = document.getElementById(
-      SlamRunner.PoetList.CssName_.POET_NAME_SELECT);
+  var poetNameSelect = this.getSelectElement();
   var selectedIndex = poetNameSelect.selectedIndex;
   poetNameSelect.remove(selectedIndex);
-  selectedIndex = Math.max(0, selectedIndex);
+  this.updateSelection_(selectedIndex);
+};
+
+
+SlamRunner.PoetList.prototype.updateSelection_ = function(opt_selectedIndex) {
+  var poetNameSelect = this.getSelectElement();
+  var selectedIndex = opt_selectedIndex || poetNameSelect.selectedIndex;
   selectedIndex = Math.min(selectedIndex, poetNameSelect.length - 1);
+  selectedIndex = Math.max(0, selectedIndex);
   poetNameSelect.selectedIndex = selectedIndex;
+  this.getSelectElement().dispatchEvent(new Event('onchange'));
 };

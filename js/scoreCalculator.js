@@ -1,12 +1,37 @@
 SlamRunner.ScoreCalculator = function() {
   this.timer_ = new SlamRunner.Timer();
+  this.registerListeners_();
 };
 
 
-SlamRunner.ScoreCalculator.CssNames_  = {
+SlamRunner.ScoreCalculator.CssName_  = {
   INPUT_ERROR: 'input-error',
   SCORE: 'score',
+  SCORE_CALCULATOR: 'score-calculator',
   TOTAL_SCORE: 'total-score',
+};
+
+
+SlamRunner.ScoreCalculator.prototype.registerListeners_ = function() {
+  var scoreInputs = document.getElementsByClassName(
+      SlamRunner.ScoreCalculator.CssName_.SCORE);
+  for (var i = 0; i < scoreInputs.length; i++) {
+    var scoreInput = scoreInputs[i];
+    scoreInput.onchange = this.dispatchChange_.bind(this);
+  }
+  this.timer_.getElement().addEventListener(
+      'onchange', this.dispatchChange_.bind(this));
+};
+
+
+SlamRunner.ScoreCalculator.prototype.dispatchChange_ = function() {
+  this.getElement().dispatchEvent(new Event('onchange'));
+};
+
+
+SlamRunner.ScoreCalculator.prototype.getElement = function() {
+  return document.getElementById(
+      SlamRunner.ScoreCalculator.CssName_.SCORE_CALCULATOR);
 };
 
 
@@ -23,27 +48,27 @@ SlamRunner.ScoreCalculator.prototype.validateScores = function() {
   var total = 0;
 
   var scoreInputs = document.getElementsByClassName(
-      ScoreCalculator.CssNames_.SCORE);
+      SlamRunner.ScoreCalculator.CssName_.SCORE);
   for (var i = 0; i < scoreInputs.length; i++) {
     var scoreInput = scoreInputs[i];
     var score = Math.round(Number(scoreInput.value) * 10) / 10;
     if ((!score && score != 0) || score < 0 || score > 10) {
       allScoresValid = false;
       scoreInput.className = [
-          ScoreCalculator.CssNames_.INPUT_ERROR,
-          ScoreCalculator.CssNames_.SCORE].join(' ');
+          SlamRunner.ScoreCalculator.CssName_.INPUT_ERROR,
+          SlamRunner.ScoreCalculator.CssName_.SCORE].join(' ');
     } else {
       max = score > max ? score : max;
       min = score < min ? score : min;
       total += score;
 
-      scoreInput.className = ScoreCalculator.CssNames_.SCORE;
+      scoreInput.className = SlamRunner.ScoreCalculator.CssName_.SCORE;
     }
   }
 
   if (allScoresValid) {
     var totalScoreLabel = document.getElementById(
-        ScoreCalculator.CssNames_.TOTAL_SCORE);
+        SlamRunner.ScoreCalculator.CssName_.TOTAL_SCORE);
     totalScoreLabel.textContent = Number(
         total - max - min - this.timer_.getTimePenalty()).toFixed(1);
   }

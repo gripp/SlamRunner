@@ -1,2 +1,2 @@
 var SlamRunner = {};
-var SlamRunner.Model = {};
+SlamRunner.Model = {};

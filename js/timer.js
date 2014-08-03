@@ -8,7 +8,7 @@ SlamRunner.Timer = function() {
 
 SlamRunner.Timer.START_LABEL_ = 'Start';
 SlamRunner.Timer.STOP_LABEL_ = 'Stop';
-SlamRunner.Timer.TIME_LIMIT_ = .5 * 60 * 1000; // 3 minutes in ms.
+SlamRunner.Timer.TIME_LIMIT_ = 3 * 60 * 1000; // 3 minutes in ms.
 SlamRunner.Timer.PENALTY_PERIOD_ = 10 * 1000; // 10 seconds in ms.
 SlamRunner.Timer.POINTS_LOST_PER_PENALTY_PERIOD_ = .5;
 
@@ -51,6 +51,7 @@ SlamRunner.Timer.prototype.startStopTimer_ = function() {
         SlamRunner.Timer.CssName_.START_STOP_BUTTON).textContent =
             SlamRunner.Timer.START_LABEL_;
   }
+  this.dispatchChange_();
 };
 
 
@@ -74,7 +75,7 @@ SlamRunner.Timer.prototype.updateTimerFace_ = function() {
     milliseconds = "0" + milliseconds;
   }
 
-  var timerFace = document.getElementById(SlamRunner.Timer.CssName_.TIMER_FACE);
+  var timerFace = this.getElement();
   timerFace.textContent = minutes + ":" + seconds + "." + milliseconds;
   timerFace.className =
       this.getTimePenalty() ? SlamRunner.Timer.CssName_.TIMER_FACE_ERROR : '';
@@ -85,6 +86,7 @@ SlamRunner.Timer.prototype.resetTimer_ = function() {
   this.startTime_ = null;
   this.stopTime_ = null;
   this.updateTimerFace_();
+  this.dispatchChange_();
 };
 
 
@@ -111,4 +113,14 @@ SlamRunner.Timer.prototype.getTimePenalty = function() {
         SlamRunner.Timer.POINTS_LOST_PER_PENALTY_PERIOD_ * Math.floor(
             timeOver / SlamRunner.Timer.PENALTY_PERIOD_));
   }
+};
+
+
+SlamRunner.Timer.prototype.dispatchChange_ = function() {
+  this.getElement().dispatchEvent(new Event('onchange'));
+};
+
+
+SlamRunner.Timer.prototype.getElement = function() {
+  return document.getElementById(SlamRunner.Timer.CssName_.TIMER_FACE);
 };
