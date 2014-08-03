@@ -1,3 +1,4 @@
+// Constructor.
 SlamRunner.Timer = function() {
   this.startTime_ = null;
   this.stopTime_ = null;
@@ -6,18 +7,23 @@ SlamRunner.Timer = function() {
 };
 
 
+// Static members.
 SlamRunner.Timer.START_LABEL_ = 'Start';
 SlamRunner.Timer.STOP_LABEL_ = 'Stop';
 SlamRunner.Timer.TIME_LIMIT_ = 3 * 60 * 1000; // 3 minutes in ms.
 SlamRunner.Timer.PENALTY_PERIOD_ = 10 * 1000; // 10 seconds in ms.
 SlamRunner.Timer.POINTS_LOST_PER_PENALTY_PERIOD_ = .5;
-
-
 SlamRunner.Timer.CssName_ = {
   RESET_BUTTON: 'reset-button',
   START_STOP_BUTTON: 'start-stop-button',
   TIMER_FACE: 'timer-face',
   TIMER_FACE_ERROR: 'timer-face-error',
+};
+
+
+// Private methods.
+SlamRunner.Timer.prototype.dispatchChange_ = function() {
+  this.getElement().dispatchEvent(new Event('onchange'));
 };
 
 
@@ -28,6 +34,14 @@ SlamRunner.Timer.prototype.registerListeners_ = function() {
   document.getElementById(
       SlamRunner.Timer.CssName_.START_STOP_BUTTON).onclick =
           this.startStopTimer_.bind(this);
+};
+
+
+SlamRunner.Timer.prototype.resetTimer_ = function() {
+  this.startTime_ = null;
+  this.stopTime_ = null;
+  this.updateTimerFace_();
+  this.dispatchChange_();
 };
 
 
@@ -82,18 +96,9 @@ SlamRunner.Timer.prototype.updateTimerFace_ = function() {
 };
 
 
-SlamRunner.Timer.prototype.resetTimer_ = function() {
-  this.startTime_ = null;
-  this.stopTime_ = null;
-  this.updateTimerFace_();
-  this.dispatchChange_();
-};
-
-
-SlamRunner.Timer.prototype.tick = function() {
-  if (this.startTime_ && !this.stopTime_) {
-    this.updateTimerFace_();
-  }
+// Public methods.
+SlamRunner.Timer.prototype.getElement = function() {
+  return document.getElementById(SlamRunner.Timer.CssName_.TIMER_FACE);
 };
 
 
@@ -116,19 +121,16 @@ SlamRunner.Timer.prototype.getTimePenalty = function() {
 };
 
 
-SlamRunner.Timer.prototype.dispatchChange_ = function() {
-  this.getElement().dispatchEvent(new Event('onchange'));
-};
-
-
-SlamRunner.Timer.prototype.getElement = function() {
-  return document.getElementById(SlamRunner.Timer.CssName_.TIMER_FACE);
-};
-
-
 SlamRunner.Timer.prototype.setEnabled = function(enabled) {
   document.getElementById(
       SlamRunner.Timer.CssName_.RESET_BUTTON).disabled = !enabled;
   document.getElementById(
       SlamRunner.Timer.CssName_.START_STOP_BUTTON).disabled = !enabled;
+};
+
+
+SlamRunner.Timer.prototype.tick = function() {
+  if (this.startTime_ && !this.stopTime_) {
+    this.updateTimerFace_();
+  }
 };

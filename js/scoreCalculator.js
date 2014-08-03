@@ -1,3 +1,4 @@
+// Constructor.
 SlamRunner.ScoreCalculator = function() {
   this.timer_ = new SlamRunner.Timer();
   this.scores_ = [];
@@ -14,6 +15,7 @@ SlamRunner.ScoreCalculator = function() {
 };
 
 
+// Static members.
 SlamRunner.ScoreCalculator.CssName_  = {
   INPUT_ERROR: 'input-error',
   SCORE: 'score',
@@ -22,26 +24,40 @@ SlamRunner.ScoreCalculator.CssName_  = {
 };
 
 
-SlamRunner.ScoreCalculator.prototype.registerListeners_ = function() {
-  var scoreInputs = document.getElementsByClassName(
-      SlamRunner.ScoreCalculator.CssName_.SCORE);
-  for (var i = 0; i < scoreInputs.length; i++) {
-    var scoreInput = scoreInputs[i];
-    scoreInput.onchange = this.dispatchChange_.bind(this);
-  }
-  this.timer_.getElement().addEventListener(
-      'onchange', this.dispatchChange_.bind(this));
-};
-
-
-SlamRunner.ScoreCalculator.prototype.dispatchChange_ = function() {
-  this.getElement().dispatchEvent(new Event('onchange'));
-};
-
-
+// Public methods.
 SlamRunner.ScoreCalculator.prototype.getElement = function() {
   return document.getElementById(
       SlamRunner.ScoreCalculator.CssName_.SCORE_CALCULATOR);
+};
+
+
+SlamRunner.ScoreCalculator.prototype.getScores = function() {
+  return this.scores_;
+};
+
+
+SlamRunner.ScoreCalculator.prototype.setEnabled = function(enabled) {
+  var scoreInputs = document.getElementsByClassName(
+      SlamRunner.ScoreCalculator.CssName_.SCORE);
+  for (var i = 0; i < scoreInputs.length; i++) {
+    scoreInputs[i].disabled = !enabled;
+  }
+  this.timer_.setEnabled(enabled);
+};
+
+
+SlamRunner.ScoreCalculator.prototype.setScores = function(scores) {
+  var scoreInputs = document.getElementsByClassName(
+      SlamRunner.ScoreCalculator.CssName_.SCORE);
+  if (scores.length != scoreInputs.length) {
+    return;
+  }
+
+  this.scores_ = [];
+  for (var i = 0; i < scoreInputs.length; i++) {
+    scoreInputs[i].value = scores[i];
+    this.scores_.push(scores[i]);
+  }
 };
 
 
@@ -86,31 +102,19 @@ SlamRunner.ScoreCalculator.prototype.validateScores = function() {
 };
 
 
-SlamRunner.ScoreCalculator.prototype.setEnabled = function(enabled) {
-  var scoreInputs = document.getElementsByClassName(
-      SlamRunner.ScoreCalculator.CssName_.SCORE);
-  for (var i = 0; i < scoreInputs.length; i++) {
-    scoreInputs[i].disabled = !enabled;
-  }
-  this.timer_.setEnabled(enabled);
+// Private methods.
+SlamRunner.ScoreCalculator.prototype.dispatchChange_ = function() {
+  this.getElement().dispatchEvent(new Event('onchange'));
 };
 
 
-SlamRunner.ScoreCalculator.prototype.getScores = function() {
-  return this.scores_;
-};
-
-
-SlamRunner.ScoreCalculator.prototype.setScores = function(scores) {
+SlamRunner.ScoreCalculator.prototype.registerListeners_ = function() {
   var scoreInputs = document.getElementsByClassName(
       SlamRunner.ScoreCalculator.CssName_.SCORE);
-  if (scores.length != scoreInputs.length) {
-    return;
-  }
-
-  this.scores_ = [];
   for (var i = 0; i < scoreInputs.length; i++) {
-    scoreInputs[i].value = scores[i];
-    this.scores_.push(scores[i]);
+    var scoreInput = scoreInputs[i];
+    scoreInput.onchange = this.dispatchChange_.bind(this);
   }
+  this.timer_.getElement().addEventListener(
+      'onchange', this.dispatchChange_.bind(this));
 };

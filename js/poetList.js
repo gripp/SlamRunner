@@ -1,8 +1,10 @@
+// Constructor.
 SlamRunner.PoetList = function() {
   this.registerListeners_()
 };
 
 
+// Static members.
 SlamRunner.PoetList.CssName_ = {
   ADD_POET_BUTTON: 'add-poet-button',
   INPUT_ERROR: 'input-error',
@@ -10,36 +12,31 @@ SlamRunner.PoetList.CssName_ = {
   POET_NAME_SELECT: 'poet-select',
   REMOVE_POET_BUTTON: 'remove-poet-button',
 };
-
-
 SlamRunner.PoetList.ENTER_BUTTON_ = 13;
 
 
-SlamRunner.PoetList.prototype.registerListeners_ = function() {
-  document.getElementById(
-      SlamRunner.PoetList.CssName_.ADD_POET_BUTTON).onclick =
-          this.addPoet_.bind(this);
-  document.getElementById(
-      SlamRunner.PoetList.CssName_.REMOVE_POET_BUTTON).onclick =
-          this.removePoet_.bind(this);
-  document.getElementById(
-      SlamRunner.PoetList.CssName_.POET_NAME_INPUT).onkeypress =
-          function(e) {
-            if (e.keyCode == SlamRunner.PoetList.ENTER_BUTTON_) {
-              this.addPoet_();
-            }
-          }.bind(this);
-  this.getSelectElement().onchange = function() {
-    this.getSelectElement().dispatchEvent(new Event('onchange'));
-  }.bind(this);
-};
-
-
+// Public methods.
 SlamRunner.PoetList.prototype.getSelectElement = function() {
   return document.getElementById(SlamRunner.PoetList.CssName_.POET_NAME_SELECT);
 };
 
 
+SlamRunner.PoetList.prototype.getCurrentPoetIndex = function(enabled) {
+  return this.getSelectElement().selectedIndex;
+};
+
+
+SlamRunner.PoetList.prototype.getPoetList = function() {
+  var poetNameSelect = this.getSelectElement(); 
+  var poetList = [];
+  for (var i = 0; i < poetNameSelect.length; i++) {
+    poetList.push(poetNameSelect.options[i].value.toLowerCase());
+  }
+  return poetList;
+};
+
+
+// Private methods.
 SlamRunner.PoetList.prototype.addPoet_ = function() {
   var poetNameInput = document.getElementById(
       SlamRunner.PoetList.CssName_.POET_NAME_INPUT);
@@ -72,6 +69,26 @@ SlamRunner.PoetList.prototype.addPoet_ = function() {
 };
 
 
+SlamRunner.PoetList.prototype.registerListeners_ = function() {
+  document.getElementById(
+      SlamRunner.PoetList.CssName_.ADD_POET_BUTTON).onclick =
+          this.addPoet_.bind(this);
+  document.getElementById(
+      SlamRunner.PoetList.CssName_.REMOVE_POET_BUTTON).onclick =
+          this.removePoet_.bind(this);
+  document.getElementById(
+      SlamRunner.PoetList.CssName_.POET_NAME_INPUT).onkeypress =
+          function(e) {
+            if (e.keyCode == SlamRunner.PoetList.ENTER_BUTTON_) {
+              this.addPoet_();
+            }
+          }.bind(this);
+  this.getSelectElement().onchange = function() {
+    this.getSelectElement().dispatchEvent(new Event('onchange'));
+  }.bind(this);
+};
+
+
 SlamRunner.PoetList.prototype.removePoet_ = function() {
   var poetNameSelect = this.getSelectElement();
   var selectedIndex = poetNameSelect.selectedIndex;
@@ -87,19 +104,4 @@ SlamRunner.PoetList.prototype.updateSelection_ = function(opt_selectedIndex) {
   selectedIndex = Math.max(0, selectedIndex);
   poetNameSelect.selectedIndex = selectedIndex;
   this.getSelectElement().dispatchEvent(new Event('onchange'));
-};
-
-
-SlamRunner.PoetList.prototype.getPoetList = function() {
-  var poetNameSelect = this.getSelectElement(); 
-  var poetList = [];
-  for (var i = 0; i < poetNameSelect.length; i++) {
-    poetList.push(poetNameSelect.options[i].value.toLowerCase());
-  }
-  return poetList;
-};
-
-
-SlamRunner.PoetList.prototype.getCurrentPoetIndex = function(enabled) {
-  return this.getSelectElement().selectedIndex;
 };
