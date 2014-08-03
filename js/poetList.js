@@ -5,6 +5,7 @@ SlamRunner.PoetList = function() {
 
 SlamRunner.PoetList.CssName_ = {
   ADD_POET_BUTTON: 'add-poet-button',
+  INPUT_ERROR: 'input-error',
   POET_NAME_INPUT: 'poet-name-input',
   POET_NAME_SELECT: 'poet-select',
   REMOVE_POET_BUTTON: 'remove-poet-button',
@@ -49,11 +50,23 @@ SlamRunner.PoetList.prototype.addPoet_ = function() {
     return;
   }
 
+  for (var i = 0; i < poetNameSelect.length; i++) {
+    if (
+        poetName.toLowerCase() ==
+        poetNameSelect.options[i].value.toLowerCase()) {
+      poetNameInput.className = [
+          SlamRunner.PoetList.CssName_.POET_NAME_INPUT,
+          SlamRunner.PoetList.CssName_.INPUT_ERROR].join(' ');
+      return;
+    }
+  }
+
   poetNameInput.value = '';
   var newPoetOption = document.createElement('option');
   newPoetOption.value = poetName;
   newPoetOption.textContent = poetName;
   poetNameSelect.appendChild(newPoetOption); 
+  poetNameInput.className = SlamRunner.PoetList.CssName_.POET_NAME_INPUT;
   poetNameInput.focus();
   this.updateSelection_();
 };
