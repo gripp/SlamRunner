@@ -14,11 +14,6 @@ SlamRunner.Model.Time.PENALTY_POINTS_ = .5;
 SlamRunner.Model.Time.TIME_LIMIT_ = 3 * 60 * 1000;
 
 
-SlamRunner.Model.Time.prototype.setTimeMs = function(time_ms) {
-  this.time_ms_ = time_ms;
-};
-
-
 SlamRunner.Model.Time.prototype.getTimeMs = function() {
   return this.time_ms_;
 };
@@ -33,4 +28,9 @@ SlamRunner.Model.Time.prototype.getTimePenalty = function() {
         Math.floor(overflowTime / SlamRunner.Model.Time.PENALTY_PERIOD_) *
         SlamRunner.Model.Time.PENALTY_POINTS_);
   }
+};
+
+
+SlamRunner.Model.Time.prototype.setTimeMs = function(time_ms) {
+  this.time_ms_ = time_ms;
 };
