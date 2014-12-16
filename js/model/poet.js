@@ -4,21 +4,23 @@ SlamRunner.Model.Poet = function(name) {
 };
 
 
-SlamRunner.Model.Score.prototype.addOrUpdateScoresByRound = function(
+SlamRunner.Model.Poet.prototype.addOrUpdateScoresByRound = function(
     scores, round) {
   while (this.scores_.length <= round) {
     this.scores_.push(new SlamRunner.Model.Score());
   }
 
   this.scores_[round].setScores(scores);
+
+  document.dispatchEvent(new Event(SlamRunner.Model.Slam.Event.UPDATED));
 };
 
 
-SlamRunner.Model.Score.prototype.getName = function() {
+SlamRunner.Model.Poet.prototype.getName = function() {
   return this.name_;
 };
 
 
-SlamRunner.Model.Score.prototype.getScoreByRound = function(round) {
-  return this.scores_[round].getScore();
+SlamRunner.Model.Poet.prototype.getScoreByRound = function(round) {
+  return this.scores_[round];
 };

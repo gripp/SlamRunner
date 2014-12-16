@@ -58,6 +58,12 @@ span.timer-face-error {
   color: #fa2c25;
 }
 
+div#score-calculator {
+  margin-left: auto;
+  margin-right: auto;
+  width: 450px;
+}
+
 div#poet-list {
   float: left;
   position: relative;

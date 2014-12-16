@@ -19,7 +19,7 @@ SlamRunner.Model.Round.getNewPoetOrder = function(order, poetList, numToDrop) {
 
   var comparisonFunction = null;
   switch (order) {
-    case HIGH_TO_LOW: 
+    case SlamRunner.Model.Round.Order.HIGH_TO_LOW: 
     default:
       comparisonFunction = SlamRunner.Model.Round.comparePoetsByScoreDescending;
   }
@@ -37,16 +37,18 @@ SlamRunner.Model.Round.getNewPoetOrder = function(order, poetList, numToDrop) {
 };
 
 
-SlamRunner.Model.Round.prototype.addPoet = function(name) {
-  this.poets_.push(name);
-};
-
-
-SlamRunner.Model.Score.prototype.getAllPoets = function() {
+SlamRunner.Model.Round.prototype.getAllPoets = function() {
   return this.poets_;
 };
 
 
-SlamRunner.Model.Score.prototype.getNthPoet = function(n) {
+SlamRunner.Model.Round.prototype.getNthPoet = function(n) {
   return this.poets_[n];
+};
+
+
+SlamRunner.Model.Round.prototype.setPoets = function(poets) {
+  for (var i = 0; i < poets.length; i++) {
+    this.poets_.push(poets[i].getName());
+  }
 };

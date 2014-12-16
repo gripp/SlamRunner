@@ -1,1 +1,0 @@
-SlamRunner.init = function() {};
