@@ -5,25 +5,26 @@ SlamRunner.Model.Score = function() {
 
 
 SlamRunner.Model.Score.prototype.getTotalScore = function() {
-  return (
-      (this.scores_[0] +
-       this.scores_[1] +
-       this.scores_[2] +
-       this.scores_[3] +
-       this.scores_[4]) -
-      Math.max(
-          this.scores_[0],
-          this.scores_[1],
-          this.scores_[2],
-          this.scores_[3],
-          this.scores_[4]) -
-      Math.min(
-          this.scores_[0],
-          this.scores_[1],
-          this.scores_[2],
-          this.scores_[3],
-          this.scores_[4]) -
-      this.time_.getTimePenalty());
+  return Math.max(
+      0,
+      ((this.scores_[0] +
+        this.scores_[1] +
+        this.scores_[2] +
+        this.scores_[3] +
+        this.scores_[4]) -
+       Math.max(
+           this.scores_[0],
+           this.scores_[1],
+           this.scores_[2],
+           this.scores_[3],
+           this.scores_[4]) -
+       Math.min(
+           this.scores_[0],
+           this.scores_[1],
+           this.scores_[2],
+           this.scores_[3],
+           this.scores_[4]) -
+       this.getTime().getTimePenalty()));
 };
 
 
@@ -39,4 +40,10 @@ SlamRunner.Model.Score.prototype.getTime = function() {
 
 SlamRunner.Model.Score.prototype.setScores = function(scores) {
   this.scores_ = scores;
+};
+
+
+SlamRunner.Model.Score.prototype.setTimeMs = function(time) {
+  this.time_.setTimeMs(time);
+  document.dispatchEvent(new Event(SlamRunner.Model.Slam.Event.UPDATED));
 };

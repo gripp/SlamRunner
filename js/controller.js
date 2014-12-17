@@ -1,12 +1,17 @@
 SlamRunner.Controller = function() {
+  this.scoreBoxes_ = document.getElementsByClassName(
+      SlamRunner.Controller.HtmlNames_.SCORE_INPUT);
   this.timer_ = new SlamRunner.Controller.Timer();
+  this.totalScoreLabel_ = document.getElementById(
+      SlamRunner.Controller.HtmlNames_.SCORE_TOTAL);
 
   document.addEventListener(
       SlamRunner.Model.Slam.Event.STARTED, this.initializePage_.bind(this));
   document.addEventListener(
       SlamRunner.Model.Slam.Event.UPDATED, this.updateViewFromModel_.bind(this));
   document.addEventListener(
-      SlamRunner.Model.Slam.Event.TIME_UPDATED_EVENT, this.updateModelFromView_.bind(this));
+      SlamRunner.Controller.Timer.TIME_UPDATED_EVENT,
+      this.updateModelFromView_.bind(this));
 
   this.slam_ = new SlamRunner.Model.Slam();
   // TODO(gripp): We have to actually initialize the slam here. For now, a fake
@@ -18,11 +23,9 @@ SlamRunner.Controller = function() {
 
 SlamRunner.Controller.prototype.initializePage_ = function() {
   // Set up score input event tiggers.
-  var scoreBoxes = document.getElementsByClassName(
-      SlamRunner.Controller.HtmlNames_.SCORE_INPUT);
-  for (var i = 0; i < scoreBoxes.length; i++) {
-    scoreBoxes[i].onchange = this.updateModelFromView_.bind(this);
-    scoreBoxes[i].disabled = false;
+  for (var i = 0; i < this.scoreBoxes_.length; i++) {
+    this.scoreBoxes_[i].onchange = this.updateModelFromView_.bind(this);
+    this.scoreBoxes_[i].disabled = false;
   }
 
   // Enable the timer.
@@ -47,11 +50,9 @@ SlamRunner.Controller.Events = {
 
 SlamRunner.Controller.prototype.updateModelFromView_ = function() {
   // Update scores.
-  var scoreBoxes = document.getElementsByClassName(
-      SlamRunner.Controller.HtmlNames_.SCORE_INPUT);
   var scores = [];
-  for (var i = 0; i < scoreBoxes.length; i++) {
-    var currentScore = parseFloat(scoreBoxes[i].value);
+  for (var i = 0; i < this.scoreBoxes_.length; i++) {
+    var currentScore = parseFloat(this.scoreBoxes_[i].value);
 
     if (currentScore < 0 || isNaN(currentScore)) {
       currentScore = 0;
@@ -63,31 +64,32 @@ SlamRunner.Controller.prototype.updateModelFromView_ = function() {
 
   this.slam_.getCurrentPoet().addOrUpdateScoresByRound(
       scores, this.slam_.getCurrentRound());
-
-  // TODO(gripp) Update the time of the current poem.
+  this.slam_.getCurrentScore().setTimeMs(this.timer_.getTimeMs());
 };
 
 
 SlamRunner.Controller.prototype.updateViewFromModel_ = function() {
-  var scoreBoxes = document.getElementsByClassName(
-      SlamRunner.Controller.HtmlNames_.SCORE_INPUT);
-  var totalScore = this.slam_.getCurrentPoet().getScoreByRound(
-      this.slam_.getCurrentRound()).getTotalScore().toString();
-  var scores = this.slam_.getCurrentPoet().getScoreByRound(
-      this.slam_.getCurrentRound()).getScoreList();
-  for (var i = 0; i < scoreBoxes.length; i++) {
+  var currentScoreObj = this.slam_.getCurrentScore();
+
+  var totalScore = currentScoreObj.getTotalScore().toString();
+  var scores = currentScoreObj.getScoreList();
+  for (var i = 0; i < this.scoreBoxes_.length; i++) {
     var currentScore = scores[i];
     currentScore = currentScore.toString();
 
     if (currentScore.length < 2) {
       currentScore += '.0';
     }
-    scoreBoxes[i].value = currentScore;
+    this.scoreBoxes_[i].value = currentScore;
   }
 
-  document.getElementById(
-      SlamRunner.Controller.HtmlNames_.SCORE_TOTAL).textContent =
-          totalScore.indexOf('.') < 0 ? totalScore + '.0' : totalScore;
+  this.totalScoreLabel_.textContent =
+      totalScore.indexOf('.') < 0 ? totalScore + '.0' : totalScore;
+
+  this.totalScoreLabel_.className =
+      currentScoreObj.getTime().getTimePenalty() > 0 ?
+      SlamRunner.Controller.HtmlNames_.TIMER_FACE_ERROR :
+      '';
 };
 
 

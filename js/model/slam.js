@@ -67,6 +67,11 @@ SlamRunner.Model.Slam.prototype.getCurrentRound = function() {
 };
 
 
+SlamRunner.Model.Slam.prototype.getCurrentScore = function() {
+  return this.getCurrentPoet().getScoreByRound(this.getCurrentRound());
+};
+
+
 SlamRunner.Model.Slam.prototype.getPoetsFromNames = function(poetNames) {
   var poets = [];
   for (var i = 0; i < poetNames.length; i++) {
