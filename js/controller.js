@@ -24,6 +24,7 @@ SlamRunner.Controller = function() {
 
 
 SlamRunner.Controller.HtmlNames_ = {
+    POET_NAV: 'poet-nav',
     POET_NAME_INPUT: 'poet-name-input',
     RESET_BUTTON: 'reset-button',
     SCORE_CALCULATOR: 'score-calculator',
@@ -52,6 +53,8 @@ SlamRunner.Controller.prototype.initializePage_ = function() {
   // Enable the timer.
   this.timer_.enable();
 
+  document.getElementById(
+      SlamRunner.Controller.HtmlNames_.POET_NAV).style.display = 'block';
   document.getElementById(
       SlamRunner.Controller.HtmlNames_.SCORE_CALCULATOR).style.display =
           'block';
