@@ -14,6 +14,11 @@ html, body {
   padding: 0;
 }
 
+body {
+  margin-bottom: 2em;
+  margin-top: 2em;
+}
+
 a, a:visited {
   color: #fa2c25;
 }
@@ -78,7 +83,8 @@ span.timer-face-error {
   color: #fa2c25;
 }
 
-div#score-calculator {
+div#current-poet-label, div#score-calculator {
+  display: none;
   margin-left: auto;
   margin-right: auto;
   width: 27em;

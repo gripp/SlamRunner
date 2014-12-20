@@ -2,6 +2,8 @@ SlamRunner.Controller = function() {
   this.setup_ = new SlamRunner.Controller.Setup();
   this.timer_ = new SlamRunner.Controller.Timer();
 
+  this.currentPoetName_ = document.getElementById(
+      SlamRunner.Controller.HtmlNames_.CURRENT_POET);
   this.scoreBoxes_ = document.getElementsByClassName(
       SlamRunner.Controller.HtmlNames_.SCORE_INPUT);
   this.totalScoreLabel_ = document.getElementById(
@@ -24,6 +26,8 @@ SlamRunner.Controller = function() {
 
 
 SlamRunner.Controller.HtmlNames_ = {
+    CURRENT_POET: 'current-poet-name',
+    CURRENT_POET_DIV: 'current-poet-label',
     POET_NAV: 'poet-nav',
     POET_NAME_INPUT: 'poet-name-input',
     RESET_BUTTON: 'reset-button',
@@ -54,6 +58,9 @@ SlamRunner.Controller.prototype.initializePage_ = function() {
   this.timer_.enable();
 
   document.getElementById(
+      SlamRunner.Controller.HtmlNames_.CURRENT_POET_DIV).style.display =
+          'block';
+  document.getElementById(
       SlamRunner.Controller.HtmlNames_.POET_NAV).style.display = 'block';
   document.getElementById(
       SlamRunner.Controller.HtmlNames_.SCORE_CALCULATOR).style.display =
@@ -74,6 +81,7 @@ SlamRunner.Controller.prototype.start_ = function() {
   }
 
   this.slam_.start();
+  this.updateViewFromModel_();
 };
 
 
@@ -98,6 +106,8 @@ SlamRunner.Controller.prototype.updateModelFromView_ = function() {
 
 
 SlamRunner.Controller.prototype.updateViewFromModel_ = function() {
+  this.currentPoetName_.textContent = this.slam_.getCurrentPoet().getName();
+
   var currentScoreObj = this.slam_.getCurrentScore();
 
   var totalScore = currentScoreObj.getTotalScore().toString();
