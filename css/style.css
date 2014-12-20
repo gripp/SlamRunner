@@ -27,20 +27,30 @@ button, input, select {
 
 button {
   cursor: pointer;
-  width: 75px;
+  width: 5em;
 }
 
 button:hover {
   background-color: #1b90de;
 }
 
-input.score {
-  text-align: center;
-  width: 65px;
-}
-
 input.input-error {
   border-color: #fa2c25;
+}
+
+div#slam-setup {
+  display: block;
+  text-align: center;
+}
+
+input#poet-name-input {
+  display: inline-block;
+  width: 25em;
+}
+
+input.score {
+  text-align: center;
+  width: 4em;
 }
 
 span#total-score {
@@ -50,9 +60,10 @@ span#total-score {
 span#timer-face {
   display: inline-block;
   font-size: 2em;
-  margin: 5px;
+  margin: .25em;
+  text-align: center;
   vertical-align: middle;
-  width: 200px;
+  width: 5em;
 }
 
 span.timer-face-error {
@@ -62,26 +73,10 @@ span.timer-face-error {
 div#score-calculator {
   margin-left: auto;
   margin-right: auto;
-  width: 450px;
+  width: 26em;
 }
 
 div#poet-list {
   float: left;
   position: relative;
-}
-
-select#poet-select, input#poet-name-input {
-  display: block;
-  width: 250px;
-}
-
-button.poet-list-button {
-  height: 50px;
-  margin-top: 0;
-  width: 50px;
-}
-
-button#add-poet-button {
-  position: absolute;
-  right: 0;
 }

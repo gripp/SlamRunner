@@ -1,23 +1,44 @@
 SlamRunner.Controller = function() {
+  this.setup_ = new SlamRunner.Controller.Setup();
+  this.timer_ = new SlamRunner.Controller.Timer();
+
   this.scoreBoxes_ = document.getElementsByClassName(
       SlamRunner.Controller.HtmlNames_.SCORE_INPUT);
-  this.timer_ = new SlamRunner.Controller.Timer();
   this.totalScoreLabel_ = document.getElementById(
       SlamRunner.Controller.HtmlNames_.SCORE_TOTAL);
 
+  document.getElementById(
+      SlamRunner.Controller.HtmlNames_.START_SLAM_BUTTON).onclick =
+          this.start_.bind(this);
   document.addEventListener(
       SlamRunner.Model.Slam.Event.STARTED, this.initializePage_.bind(this));
   document.addEventListener(
-      SlamRunner.Model.Slam.Event.UPDATED, this.updateViewFromModel_.bind(this));
+      SlamRunner.Model.Slam.Event.UPDATED,
+      this.updateViewFromModel_.bind(this));
   document.addEventListener(
       SlamRunner.Controller.Timer.TIME_UPDATED_EVENT,
       this.updateModelFromView_.bind(this));
 
   this.slam_ = new SlamRunner.Model.Slam();
-  // TODO(gripp): We have to actually initialize the slam here. For now, a fake
-  // starter poet.
-  this.slam_.addPoet('Gripp');
-  this.slam_.start();
+};
+
+
+SlamRunner.Controller.HtmlNames_ = {
+    POET_NAME_INPUT: 'poet-name-input',
+    RESET_BUTTON: 'reset-button',
+    SCORE_CALCULATOR: 'score-calculator',
+    SCORE_INPUT: 'score',
+    SCORE_TOTAL: 'total-score',
+    SETUP: 'slam-setup',
+    START_SLAM_BUTTON: 'start-slam-button',
+    START_STOP_BUTTON: 'start-stop-button',
+    TIMER_FACE: 'timer-face',
+    TIMER_FACE_ERROR: 'timer-face-error',
+};
+
+
+SlamRunner.Controller.Events = {
+    MODEL_UPDATED: 'model-updated',
 };
 
 
@@ -30,21 +51,26 @@ SlamRunner.Controller.prototype.initializePage_ = function() {
 
   // Enable the timer.
   this.timer_.enable();
+
+  document.getElementById(
+      SlamRunner.Controller.HtmlNames_.SCORE_CALCULATOR).style.display =
+          'block';
+  document.getElementById(
+      SlamRunner.Controller.HtmlNames_.SETUP).style.display = 'none';
 };
 
 
-SlamRunner.Controller.HtmlNames_ = {
-    RESET_BUTTON: 'reset-button',
-    SCORE_INPUT: 'score',
-    SCORE_TOTAL: 'total-score',
-    START_STOP_BUTTON: 'start-stop-button',
-    TIMER_FACE: 'timer-face',
-    TIMER_FACE_ERROR: 'timer-face-error',
-};
+SlamRunner.Controller.prototype.start_ = function() {
+  if (!this.setup_.isReady()) {
+    return;
+  }
 
+  var poets = this.setup_.getAllPoets();
+  for (var i = 0; i < poets.length; i++) {
+    this.slam_.addPoet(poets[i]);
+  }
 
-SlamRunner.Controller.Events = {
-    MODEL_UPDATED: 'model-updated',
+  this.slam_.start();
 };
 
 
