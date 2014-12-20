@@ -14,6 +14,14 @@ html, body {
   padding: 0;
 }
 
+a, a:visited {
+  color: #fa2c25;
+}
+
+a:active, a:hover {
+  color: #f0dca6;
+}
+
 button, input, select {
   background-color: #f2eae1;
   border: 1px solid #705d70;
@@ -73,10 +81,29 @@ span.timer-face-error {
 div#score-calculator {
   margin-left: auto;
   margin-right: auto;
-  width: 26em;
+  width: 27em;
 }
 
-div#poet-list {
-  float: left;
-  position: relative;
+div#poet-nav {
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+  width: 25em;
+}
+
+div#poet-nav div {
+  display: inline-block;
+  padding-left: 1em;
+  padding-right: 1em;
+  width: 10em;
+}
+
+div#poet-nav div#poet-nav-left {
+  border-right: 1px solid #705d70;
+  text-align: right;
+}
+
+div#poet-nav div#poet-nav-right {
+  border-left: 1px solid #705d70;
+  text-align: left;
 }
