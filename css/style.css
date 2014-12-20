@@ -3,12 +3,12 @@
  * http://design-seeds.com/index.php/home/entry/building-brights
  */ 
 
-/* @import url(http://fonts.googleapis.com/css?family=Domine:400,700); */
+@import url(http://fonts.googleapis.com/css?family=Anonymous+Pro);
 
 html, body {
   background-color: #addde3;
   color: #705d70;
-  font-family: 'Domine', 'Arial', sans-serif;
+  font-family: 'Anonymous Pro', 'Arial', sans-serif;
   font-size: 18px;
   margin: 0;
   padding: 0;
@@ -20,7 +20,8 @@ body {
 }
 
 a, a:visited {
-  color: #fa2c25;
+  color: #705d70;
+  background-color: #1b90de;
 }
 
 a:active, a:hover {
@@ -34,8 +35,8 @@ button, input, select {
   box-sizing: border-box;
   font-family: inherit;
   font-size: 1em;
-  margin: 5px;
-  padding: 10px;
+  margin: .25em;
+  padding: .5em;
 }
 
 button {
@@ -92,14 +93,17 @@ span.timer-face-error {
 
 div#current-poet-label, div#score-calculator {
   display: none;
+  margin-bottom: 1em;
   margin-left: auto;
   margin-right: auto;
-  width: 27em;
+  width: 28em;
 }
 
 div#poet-nav {
+  background-color: #1b90de;
   margin-left: auto;
   margin-right: auto;
+  padding: .25em;
   text-align: center;
   width: 25em;
 }
