@@ -22,7 +22,7 @@ SlamRunner.Controller.Timer = function() {
 
 SlamRunner.Controller.Timer.START_LABEL_ = 'Start';
 SlamRunner.Controller.Timer.STOP_LABEL_ = 'Stop';
-SlamRunner.Controller.Timer.TIME_UPDATED_EVENT = 'timeupdated';
+SlamRunner.Controller.Timer.TIME_UPDATED_EVENT = 'tmr-timeupdated';
 
 
 SlamRunner.Controller.Timer.prototype.enable = function() {

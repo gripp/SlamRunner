@@ -59,6 +59,7 @@ div#slam-setup {
 
 select#add-poets-list {
   display: block;
+  height: 15em;
   margin-left: auto;
   margin-right: auto;
   width: 35em;

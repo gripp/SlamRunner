@@ -6,12 +6,8 @@ SlamRunner.Model.Poet = function(name) {
 
 SlamRunner.Model.Poet.prototype.addOrUpdateScoresByRound = function(
     scores, round) {
-  while (this.scores_.length <= round) {
-    this.scores_.push(new SlamRunner.Model.Score());
-  }
-
+  this.fillScoresToRound_(round);
   this.scores_[round].setScores(scores);
-
   document.dispatchEvent(new Event(SlamRunner.Model.Slam.Event.UPDATED));
 };
 
@@ -22,5 +18,13 @@ SlamRunner.Model.Poet.prototype.getName = function() {
 
 
 SlamRunner.Model.Poet.prototype.getScoreByRound = function(round) {
+  this.fillScoresToRound_(round);
   return this.scores_[round];
+};
+
+
+SlamRunner.Model.Poet.prototype.fillScoresToRound_ = function(round) {
+  while (this.scores_.length <= round) {
+    this.scores_.push(new SlamRunner.Model.Score());
+  }
 };

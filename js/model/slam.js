@@ -8,8 +8,8 @@ SlamRunner.Model.Slam = function() {
 
 
 SlamRunner.Model.Slam.Event = {
-    STARTED: 'started',
-    UPDATED: 'updated',
+    STARTED: 'slm-started',
+    UPDATED: 'slm-updated',
 };
 
 
@@ -78,6 +78,11 @@ SlamRunner.Model.Slam.prototype.getPoetsFromNames = function(poetNames) {
     poets.push(this.poets_[poetNames[i]]);
   }
   return poets;
+};
+
+
+SlamRunner.Model.Slam.prototype.hasStarted = function() {
+  return this.currentRound_ >= 0;
 };
 
 

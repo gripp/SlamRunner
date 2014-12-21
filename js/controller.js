@@ -9,9 +9,6 @@ SlamRunner.Controller = function() {
   this.totalScoreLabel_ = document.getElementById(
       SlamRunner.Controller.HtmlNames_.SCORE_TOTAL);
 
-  document.getElementById(
-      SlamRunner.Controller.HtmlNames_.START_SLAM_BUTTON).onclick =
-          this.start_.bind(this);
   document.addEventListener(
       SlamRunner.Model.Slam.Event.STARTED, this.initializePage_.bind(this));
   document.addEventListener(
@@ -20,12 +17,18 @@ SlamRunner.Controller = function() {
   document.addEventListener(
       SlamRunner.Controller.Timer.TIME_UPDATED_EVENT,
       this.updateModelFromView_.bind(this));
+  document.addEventListener(
+      SlamRunner.Controller.Setup.POET_ADDED_EVENT, this.addPoet_.bind(this));
+  document.addEventListener(
+      SlamRunner.Controller.Setup.START_SLAM_EVENT, this.start_.bind(this));
 
   this.slam_ = new SlamRunner.Model.Slam();
 };
 
 
 SlamRunner.Controller.HtmlNames_ = {
+    ADD_POET_BUTTON: 'add-poet-button',
+    ADD_POETS_LIST: 'add-poets-list',
     CURRENT_POET: 'current-poet-name',
     CURRENT_POET_DIV: 'current-poet-label',
     POET_NAV: 'poet-nav',
@@ -44,6 +47,19 @@ SlamRunner.Controller.HtmlNames_ = {
 
 SlamRunner.Controller.Events = {
     MODEL_UPDATED: 'model-updated',
+};
+
+
+SlamRunner.Controller.prototype.addPoet_ = function() {
+  var poetName = this.setup_.getEnteredPoetName();
+
+  if (poetName.length == 0) {
+    return;
+  }
+
+  this.slam_.addPoet(poetName);
+  this.setup_.clearEnteredPoetName();
+  this.updateViewFromModel_();
 };
 
 
@@ -75,11 +91,6 @@ SlamRunner.Controller.prototype.start_ = function() {
     return;
   }
 
-  var poets = this.setup_.getAllPoets();
-  for (var i = 0; i < poets.length; i++) {
-    this.slam_.addPoet(poets[i]);
-  }
-
   this.slam_.start();
   this.updateViewFromModel_();
 };
@@ -106,29 +117,33 @@ SlamRunner.Controller.prototype.updateModelFromView_ = function() {
 
 
 SlamRunner.Controller.prototype.updateViewFromModel_ = function() {
-  this.currentPoetName_.textContent = this.slam_.getCurrentPoet().getName();
+  if (this.slam_.hasStarted()) {
+    this.currentPoetName_.textContent = this.slam_.getCurrentPoet().getName();
 
-  var currentScoreObj = this.slam_.getCurrentScore();
+    var currentScoreObj = this.slam_.getCurrentScore();
 
-  var totalScore = currentScoreObj.getTotalScore().toString();
-  var scores = currentScoreObj.getScoreList();
-  for (var i = 0; i < this.scoreBoxes_.length; i++) {
-    var currentScore = scores[i];
-    currentScore = currentScore.toString();
+    var totalScore = currentScoreObj.getTotalScore().toString();
+    var scores = currentScoreObj.getScoreList();
+    for (var i = 0; i < this.scoreBoxes_.length; i++) {
+      var currentScore = scores[i];
+      currentScore = currentScore.toString();
 
-    if (currentScore.length < 2) {
-      currentScore += '.0';
+      if (currentScore.length < 2) {
+        currentScore += '.0';
+      }
+      this.scoreBoxes_[i].value = currentScore;
     }
-    this.scoreBoxes_[i].value = currentScore;
+
+    this.totalScoreLabel_.textContent =
+        totalScore.indexOf('.') < 0 ? totalScore + '.0' : totalScore;
+
+    this.totalScoreLabel_.className =
+        currentScoreObj.getTime().getTimePenalty() > 0 ?
+        SlamRunner.Controller.HtmlNames_.TIMER_FACE_ERROR :
+        '';
+  } else {
+    this.setup_.setPoetList(this.slam_.getAllPoets());
   }
-
-  this.totalScoreLabel_.textContent =
-      totalScore.indexOf('.') < 0 ? totalScore + '.0' : totalScore;
-
-  this.totalScoreLabel_.className =
-      currentScoreObj.getTime().getTimePenalty() > 0 ?
-      SlamRunner.Controller.HtmlNames_.TIMER_FACE_ERROR :
-      '';
 };
 
 
