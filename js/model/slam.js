@@ -26,10 +26,6 @@ SlamRunner.Model.Slam.prototype.addPoet = function(name) {
 
 
 SlamRunner.Model.Slam.prototype.advance = function() {
-  if (this.hasEnded()) {
-    return;
-  }
-
   this.currentPoet_++;
   if (
       this.currentPoet_ ==
@@ -37,8 +33,11 @@ SlamRunner.Model.Slam.prototype.advance = function() {
     this.advanceRound();
   }
 
-  // TODO(gripp) If the slam is over now, dispatch an ENDED event instead.
-  document.dispatchEvent(new Event(SlamRunner.Model.Slam.Event.UPDATED));
+  if (this.hasEnded()) {
+    document.dispatchEvent(new Event(SlamRunner.Model.Slam.Event.ENDED));
+  } else {
+    document.dispatchEvent(new Event(SlamRunner.Model.Slam.Event.UPDATED));
+  }
 };
 
 
@@ -49,7 +48,6 @@ SlamRunner.Model.Slam.prototype.advanceRound = function() {
   }
 
   if (this.hasEnded()) {
-    document.dispatchEvent(new Event(SlamRunner.Model.Slam.Event.ENDED));
     return;
   }
 
