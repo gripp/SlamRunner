@@ -10,7 +10,7 @@ SlamRunner.Controller = function() {
       SlamRunner.Controller.HtmlNames_.SCORE_INPUT);
   this.totalScoreLabel_ = document.getElementById(
       SlamRunner.Controller.HtmlNames_.SCORE_TOTAL);
-  this.previousPoetLink = document.getElementById(
+  this.previousPoetLink_ = document.getElementById(
       SlamRunner.Controller.HtmlNames_.PREV_POET_LINK);
 
   document.addEventListener(
@@ -23,6 +23,7 @@ SlamRunner.Controller = function() {
   document.addEventListener(
       SlamRunner.Controller.Timer.TIME_UPDATED_EVENT,
       this.updateModelFromView_.bind(this));
+
   document.addEventListener(
       SlamRunner.Controller.Setup.POET_ADDED_EVENT, this.addPoet_.bind(this));
   document.addEventListener(
@@ -111,6 +112,7 @@ SlamRunner.Controller.prototype.initializePage_ = function() {
   this.timer_.enable();
 
   // Set up the nav links.
+  this.previousPoetLink_.onclick = this.slam_.rewind.bind(this.slam_);
   document.getElementById(
       SlamRunner.Controller.HtmlNames_.NEXT_POET_LINK).onclick =
           this.slam_.advance.bind(this.slam_);
@@ -192,7 +194,7 @@ SlamRunner.Controller.prototype.updateViewFromModel_ = function() {
         SlamRunner.Controller.HtmlNames_.TIMER_FACE_ERROR :
         '';
 
-    this.previousPoetLink.style.display = this.slam_.canGoBack() ? 'inline' : 'none';
+    this.previousPoetLink_.style.display = this.slam_.canGoBack() ? 'inline' : 'none';
   } else {
     this.setup_.setPoetList(this.slam_.getAllPoets());
   }

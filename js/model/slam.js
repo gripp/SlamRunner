@@ -119,6 +119,12 @@ SlamRunner.Model.Slam.prototype.hasStarted = function() {
 };
 
 
+SlamRunner.Model.Slam.prototype.rewind = function() {
+  this.currentPoet_ = Math.min(0, this.currentPoet_ - 1);
+  document.dispatchEvent(new Event(SlamRunner.Model.Slam.Event.UPDATED));
+};
+
+
 SlamRunner.Model.Slam.prototype.start = function() {
   this.advanceRound();
   document.dispatchEvent(new Event(SlamRunner.Model.Slam.Event.STARTED));
