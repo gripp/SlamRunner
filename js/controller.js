@@ -10,6 +10,8 @@ SlamRunner.Controller = function() {
       SlamRunner.Controller.HtmlNames_.SCORE_INPUT);
   this.totalScoreLabel_ = document.getElementById(
       SlamRunner.Controller.HtmlNames_.SCORE_TOTAL);
+  this.previousPoetLink = document.getElementById(
+      SlamRunner.Controller.HtmlNames_.PREV_POET_LINK);
 
   document.addEventListener(
       SlamRunner.Model.Slam.Event.STARTED, this.initializePage_.bind(this));
@@ -40,6 +42,7 @@ SlamRunner.Controller.HtmlNames_ = {
     NEXT_POET_LINK: 'next-poet-link',
     POET_NAV: 'poet-nav',
     POET_NAME_INPUT: 'poet-name-input',
+    PREV_POET_LINK: 'prev-poet-link',
     RESET_BUTTON: 'reset-button',
     SCORE_CALCULATOR: 'score-calculator',
     SCORE_INPUT: 'score',
@@ -188,6 +191,8 @@ SlamRunner.Controller.prototype.updateViewFromModel_ = function() {
         currentScoreObj.getTime().getTimePenalty() > 0 ?
         SlamRunner.Controller.HtmlNames_.TIMER_FACE_ERROR :
         '';
+
+    this.previousPoetLink.style.display = this.slam_.canGoBack() ? 'inline' : 'none';
   } else {
     this.setup_.setPoetList(this.slam_.getAllPoets());
   }

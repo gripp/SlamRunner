@@ -70,6 +70,11 @@ SlamRunner.Model.Slam.prototype.advanceRound = function() {
 };
 
 
+SlamRunner.Model.Slam.prototype.canGoBack = function() {
+  return this.currentPoet_ > 0;
+};
+
+
 SlamRunner.Model.Slam.prototype.getAllPoets = function() {
   return Object.keys(this.poets_);
 };
