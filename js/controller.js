@@ -2,6 +2,8 @@ SlamRunner.Controller = function() {
   this.setup_ = new SlamRunner.Controller.Setup();
   this.timer_ = new SlamRunner.Controller.Timer();
 
+  this.currentRound_ = document.getElementById(
+      SlamRunner.Controller.HtmlNames_.CURRENT_ROUND);
   this.currentPoetName_ = document.getElementById(
       SlamRunner.Controller.HtmlNames_.CURRENT_POET);
   this.scoreBoxes_ = document.getElementsByClassName(
@@ -11,6 +13,8 @@ SlamRunner.Controller = function() {
 
   document.addEventListener(
       SlamRunner.Model.Slam.Event.STARTED, this.initializePage_.bind(this));
+  document.addEventListener(
+      SlamRunner.Model.Slam.Event.ENDED, this.showFinalScores_.bind(this));
   document.addEventListener(
       SlamRunner.Model.Slam.Event.UPDATED,
       this.updateViewFromModel_.bind(this));
@@ -29,8 +33,11 @@ SlamRunner.Controller = function() {
 SlamRunner.Controller.HtmlNames_ = {
     ADD_POET_BUTTON: 'add-poet-button',
     ADD_POETS_LIST: 'add-poets-list',
+    CURRENT_INFO: 'current-info',
     CURRENT_POET: 'current-poet-name',
-    CURRENT_POET_DIV: 'current-poet-label',
+    CURRENT_ROUND: 'current-round-number',
+    FINAL_SCORES: 'final-scores',
+    NEXT_POET_LINK: 'next-poet-link',
     POET_NAV: 'poet-nav',
     POET_NAME_INPUT: 'poet-name-input',
     RESET_BUTTON: 'reset-button',
@@ -57,9 +64,36 @@ SlamRunner.Controller.prototype.addPoet_ = function() {
     return;
   }
 
-  this.slam_.addPoet(poetName);
   this.setup_.clearEnteredPoetName();
-  this.updateViewFromModel_();
+  this.slam_.addPoet(poetName);
+};
+
+
+SlamRunner.Controller.prototype.showFinalScores_ = function() {
+  document.getElementById(
+      SlamRunner.Controller.HtmlNames_.CURRENT_INFO).style.display =
+          'none';
+  document.getElementById(
+      SlamRunner.Controller.HtmlNames_.SCORE_CALCULATOR).style.display =
+          'none';
+  document.getElementById(
+      SlamRunner.Controller.HtmlNames_.POET_NAV).style.display = 'none';
+
+  var finalScores = document.getElementById(
+      SlamRunner.Controller.HtmlNames_.FINAL_SCORES);
+  var poetList = SlamRunner.Model.Round.getNewPoetOrder(
+      SlamRunner.Model.Round.Order.HIGH_TO_LOW,
+      this.slam_.getPoetsFromNames(this.slam_.getAllPoets()),
+      0);
+  for (var i = 0; i < poetList.length; i++) {
+    var nextPoetLi = document.createElement('li');
+    nextPoetLi.textContent =
+        poetList[i].getName() +
+        ' ' +
+        SlamRunner.Model.Score.scoreToString(poetList[i].getCumulativeScore());
+    finalScores.appendChild(nextPoetLi);
+  }
+  finalScores.style.display = 'block';
 };
 
 
@@ -73,16 +107,30 @@ SlamRunner.Controller.prototype.initializePage_ = function() {
   // Enable the timer.
   this.timer_.enable();
 
+  // Set up the nav links.
   document.getElementById(
-      SlamRunner.Controller.HtmlNames_.CURRENT_POET_DIV).style.display =
+      SlamRunner.Controller.HtmlNames_.NEXT_POET_LINK).onclick =
+          this.slam_.advance.bind(this.slam_);
+
+  // Display the current poet label.
+  document.getElementById(
+      SlamRunner.Controller.HtmlNames_.CURRENT_INFO).style.display =
           'block';
-  document.getElementById(
-      SlamRunner.Controller.HtmlNames_.POET_NAV).style.display = 'block';
+
+  // Display the score calculator.
   document.getElementById(
       SlamRunner.Controller.HtmlNames_.SCORE_CALCULATOR).style.display =
           'block';
+
+  // Display the slam nav bar.
+  document.getElementById(
+      SlamRunner.Controller.HtmlNames_.POET_NAV).style.display = 'block';
+
+  // Hide the setup section.
   document.getElementById(
       SlamRunner.Controller.HtmlNames_.SETUP).style.display = 'none';
+
+  this.updateModelFromView_();
 };
 
 
@@ -92,7 +140,6 @@ SlamRunner.Controller.prototype.start_ = function() {
   }
 
   this.slam_.start();
-  this.updateViewFromModel_();
 };
 
 
@@ -117,21 +164,21 @@ SlamRunner.Controller.prototype.updateModelFromView_ = function() {
 
 
 SlamRunner.Controller.prototype.updateViewFromModel_ = function() {
-  if (this.slam_.hasStarted()) {
+  if (this.slam_.hasEnded()) {
+    return;
+  } else if (this.slam_.hasStarted()) {
+    this.currentRound_.textContent = (
+        this.slam_.getCurrentRound() + 1).toString();
     this.currentPoetName_.textContent = this.slam_.getCurrentPoet().getName();
 
     var currentScoreObj = this.slam_.getCurrentScore();
 
-    var totalScore = currentScoreObj.getTotalScore().toString();
+    var totalScore = SlamRunner.Model.Score.scoreToString(
+        currentScoreObj.getTotalScore());
     var scores = currentScoreObj.getScoreList();
     for (var i = 0; i < this.scoreBoxes_.length; i++) {
-      var currentScore = scores[i];
-      currentScore = currentScore.toString();
-
-      if (currentScore.length < 2) {
-        currentScore += '.0';
-      }
-      this.scoreBoxes_[i].value = currentScore;
+      this.scoreBoxes_[i].value =
+          SlamRunner.Model.Score.scoreToString(scores[i]);
     }
 
     this.totalScoreLabel_.textContent =

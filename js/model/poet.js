@@ -12,6 +12,15 @@ SlamRunner.Model.Poet.prototype.addOrUpdateScoresByRound = function(
 };
 
 
+SlamRunner.Model.Poet.prototype.getCumulativeScore = function() {
+  var cumulativeScore = 0;
+  for (var i = 0; i < this.scores_.length; i++) {
+    cumulativeScore += this.scores_[i].getTotalScore();
+  }
+  return cumulativeScore;
+};
+
+
 SlamRunner.Model.Poet.prototype.getName = function() {
   return this.name_;
 };

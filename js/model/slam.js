@@ -1,13 +1,14 @@
 SlamRunner.Model.Slam = function() {
   this.poets_ = {};
   this.rounds_ = [];
-  this.numRounds = 3;
+  this.numRounds_ = 3;
   this.currentPoet_ = 0;
   this.currentRound_ = -1;
 };
 
 
 SlamRunner.Model.Slam.Event = {
+    ENDED: 'slm-ended',
     STARTED: 'slm-started',
     UPDATED: 'slm-updated',
 };
@@ -19,17 +20,37 @@ SlamRunner.Model.Slam.prototype.addPoet = function(name) {
   }
 
   this.poets_[name] = new SlamRunner.Model.Poet(name);
+  document.dispatchEvent(new Event(SlamRunner.Model.Slam.Event.UPDATED));
   return true;
 };
 
 
-SlamRunner.Model.Slam.prototype.advanceRound = function() {
-  if (this.currentRound_ < this.numRounds) {
-    this.currentRound_++;
+SlamRunner.Model.Slam.prototype.advance = function() {
+  if (this.hasEnded()) {
+    return;
   }
 
-  if (this.currentRound_ >= this.numRounds) {
-    return false;
+  this.currentPoet_++;
+  if (
+      this.currentPoet_ ==
+      this.rounds_[this.currentRound_].getAllPoets().length) {
+    this.advanceRound();
+  }
+
+  // TODO(gripp) If the slam is over now, dispatch an ENDED event instead.
+  document.dispatchEvent(new Event(SlamRunner.Model.Slam.Event.UPDATED));
+};
+
+
+SlamRunner.Model.Slam.prototype.advanceRound = function() {
+  if (this.currentRound_ < this.numRounds_) {
+    this.currentRound_++;
+    this.currentPoet_ = 0;
+  }
+
+  if (this.hasEnded()) {
+    document.dispatchEvent(new Event(SlamRunner.Model.Slam.Event.ENDED));
+    return;
   }
 
   var nextRound = new SlamRunner.Model.Round();
@@ -37,17 +58,17 @@ SlamRunner.Model.Slam.prototype.advanceRound = function() {
   var poetList =
       this.currentRound_ == 0 ?
       this.getAllPoets() :
-      this.rounds_[this.currentRound_].getAllPoets();
+      this.rounds_[this.currentRound_ - 1].getAllPoets();
   var poetList = this.getPoetsFromNames(poetList);
 
-  var numToDrop =
-      this.currentRound_ == 0 ? 0 : Math.floor(poetList.length / 2);
+  var numToDrop = 0;
+  // TODO(gripp) Add dropping of poets back in.
+  // this.currentRound_ == 0 ? 0 : Math.floor(poetList.length / 2);
 
   nextRound.setPoets(
       SlamRunner.Model.Round.getNewPoetOrder(
           SlamRunner.Model.Round.Order.HIGH_TO_LOW, poetList, numToDrop));
   this.rounds_.push(nextRound);
-  return true;
 };
 
 
@@ -57,6 +78,10 @@ SlamRunner.Model.Slam.prototype.getAllPoets = function() {
 
 
 SlamRunner.Model.Slam.prototype.getCurrentPoet = function() {
+  if (this.hasEnded()) {
+    return false;
+  }
+
   return this.poets_[
       this.rounds_[this.currentRound_].getNthPoet(this.currentPoet_)];
 };
@@ -78,6 +103,11 @@ SlamRunner.Model.Slam.prototype.getPoetsFromNames = function(poetNames) {
     poets.push(this.poets_[poetNames[i]]);
   }
   return poets;
+};
+
+
+SlamRunner.Model.Slam.prototype.hasEnded = function() {
+  return this.currentRound_ >= this.numRounds_;
 };
 
 

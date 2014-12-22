@@ -27,10 +27,10 @@ SlamRunner.Model.Round.getNewPoetOrder = function(order, poetList, numToDrop) {
   while (newPoets.length < returnLength) {
     var max = 0;
     for (var i = 1; i < poetList.length; i++) {
-      max = comparisonFunction(poet[max], poet[i]) ? max : i;
+      max = comparisonFunction(poetList[max], poetList[i]) ? max : i;
     }
     newPoets.push(poetList[max]);
-    poetList = poetList.splice(max, 1);
+    poetList.splice(max, 1);
   }
 
   return newPoets;

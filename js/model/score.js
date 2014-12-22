@@ -4,6 +4,17 @@ SlamRunner.Model.Score = function() {
 };
 
 
+SlamRunner.Model.Score.scoreToString = function(score) {
+  score = Math.round(score * 10).toString();
+  score = score.substring(
+      0, score.length - 1) + '.' + score.substring(score.length - 1);
+  if (score.indexOf('.') == 0) {
+    score = '0' + score;
+  }
+  return score;
+};
+
+
 SlamRunner.Model.Score.prototype.getTotalScore = function() {
   return Math.max(
       0,
