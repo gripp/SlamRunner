@@ -77,36 +77,6 @@ SlamRunner.Controller.prototype.addPoet_ = function() {
 };
 
 
-SlamRunner.Controller.prototype.showFinalScores_ = function() {
-  document.getElementById(
-      SlamRunner.Controller.HtmlNames_.CURRENT_INFO).style.display =
-          'none';
-  document.getElementById(
-      SlamRunner.Controller.HtmlNames_.SCORE_CALCULATOR).style.display =
-          'none';
-  document.getElementById(
-      SlamRunner.Controller.HtmlNames_.POET_NAV).style.display = 'none';
-  document.getElementById(
-      SlamRunner.Controller.HtmlNames_.BIRDS_EYE).style.display = 'none';
-
-  var finalScores = document.getElementById(
-      SlamRunner.Controller.HtmlNames_.FINAL_SCORES);
-  var poetList = SlamRunner.Model.Round.getNewPoetOrder(
-      SlamRunner.Model.Round.Order.HIGH_TO_LOW,
-      this.slam_.getPoetsFromNames(this.slam_.getAllPoets()),
-      0);
-  for (var i = 0; i < poetList.length; i++) {
-    var nextPoetLi = document.createElement('li');
-    nextPoetLi.textContent =
-        poetList[i].getName() +
-        ' ' +
-        SlamRunner.Model.Score.scoreToString(poetList[i].getCumulativeScore());
-    finalScores.appendChild(nextPoetLi);
-  }
-  finalScores.style.display = 'block';
-};
-
-
 SlamRunner.Controller.prototype.initializePage_ = function() {
   // Set up score input event tiggers.
   for (var i = 0; i < this.scoreBoxes_.length; i++) {
@@ -146,6 +116,36 @@ SlamRunner.Controller.prototype.initializePage_ = function() {
       SlamRunner.Controller.HtmlNames_.SETUP).style.display = 'none';
 
   this.updateModelFromView_();
+};
+
+
+SlamRunner.Controller.prototype.showFinalScores_ = function() {
+  document.getElementById(
+      SlamRunner.Controller.HtmlNames_.CURRENT_INFO).style.display =
+          'none';
+  document.getElementById(
+      SlamRunner.Controller.HtmlNames_.SCORE_CALCULATOR).style.display =
+          'none';
+  document.getElementById(
+      SlamRunner.Controller.HtmlNames_.POET_NAV).style.display = 'none';
+  document.getElementById(
+      SlamRunner.Controller.HtmlNames_.BIRDS_EYE).style.display = 'none';
+
+  var finalScores = document.getElementById(
+      SlamRunner.Controller.HtmlNames_.FINAL_SCORES);
+  var poetList = SlamRunner.Model.Round.getNewPoetOrder(
+      SlamRunner.Model.Round.Order.HIGH_TO_LOW,
+      this.slam_.getPoetsFromNames(this.slam_.getAllPoets()),
+      0);
+  for (var i = 0; i < poetList.length; i++) {
+    var nextPoetLi = document.createElement('li');
+    nextPoetLi.textContent =
+        poetList[i].getName() +
+        ' ' +
+        SlamRunner.Model.Score.scoreToString(poetList[i].getCumulativeScore());
+    finalScores.appendChild(nextPoetLi);
+  }
+  finalScores.style.display = 'block';
 };
 
 
