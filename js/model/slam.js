@@ -61,7 +61,6 @@ SlamRunner.Model.Slam.prototype.advanceRound = function() {
 
   var numToDrop = 0;
   // TODO(gripp) Add dropping of poets back in.
-  // this.currentRound_ == 0 ? 0 : Math.floor(poetList.length / 2);
 
   nextRound.setPoets(
       SlamRunner.Model.Round.getNewPoetOrder(
@@ -92,6 +91,11 @@ SlamRunner.Model.Slam.prototype.getCurrentPoet = function() {
 
 SlamRunner.Model.Slam.prototype.getCurrentRound = function() {
   return this.currentRound_;
+};
+
+
+SlamRunner.Model.Slam.prototype.getCurrentRoundPoets = function() {
+  return this.getPoetsFromNames(this.rounds_[this.currentRound_].getAllPoets());
 };
 
 

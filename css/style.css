@@ -92,7 +92,10 @@ span.timer-face-error {
   color: #fa2c25;
 }
 
-div#current-info, div#score-calculator, ol#final-scores {
+div#current-info,
+div#score-calculator,
+div#birds-eye,
+ol#final-scores {
   display: none;
   margin-bottom: 1em;
   margin-left: auto;

@@ -2,10 +2,12 @@ SlamRunner.Controller = function() {
   this.setup_ = new SlamRunner.Controller.Setup();
   this.timer_ = new SlamRunner.Controller.Timer();
 
-  this.currentRound_ = document.getElementById(
-      SlamRunner.Controller.HtmlNames_.CURRENT_ROUND);
   this.currentPoetName_ = document.getElementById(
       SlamRunner.Controller.HtmlNames_.CURRENT_POET);
+  this.currentRound_ = document.getElementById(
+      SlamRunner.Controller.HtmlNames_.CURRENT_ROUND);
+  this.currentRoundScores_ = document.getElementById(
+      SlamRunner.Controller.HtmlNames_.CURRENT_ROUND_SCORES);
   this.scoreBoxes_ = document.getElementsByClassName(
       SlamRunner.Controller.HtmlNames_.SCORE_INPUT);
   this.totalScoreLabel_ = document.getElementById(
@@ -36,9 +38,11 @@ SlamRunner.Controller = function() {
 SlamRunner.Controller.HtmlNames_ = {
     ADD_POET_BUTTON: 'add-poet-button',
     ADD_POETS_LIST: 'add-poets-list',
+    BIRDS_EYE: 'birds-eye',
     CURRENT_INFO: 'current-info',
     CURRENT_POET: 'current-poet-name',
     CURRENT_ROUND: 'current-round-number',
+    CURRENT_ROUND_SCORES: 'current-round-scores',
     FINAL_SCORES: 'final-scores',
     NEXT_POET_LINK: 'next-poet-link',
     POET_NAV: 'poet-nav',
@@ -82,6 +86,8 @@ SlamRunner.Controller.prototype.showFinalScores_ = function() {
           'none';
   document.getElementById(
       SlamRunner.Controller.HtmlNames_.POET_NAV).style.display = 'none';
+  document.getElementById(
+      SlamRunner.Controller.HtmlNames_.BIRDS_EYE).style.display = 'none';
 
   var finalScores = document.getElementById(
       SlamRunner.Controller.HtmlNames_.FINAL_SCORES);
@@ -131,6 +137,10 @@ SlamRunner.Controller.prototype.initializePage_ = function() {
   document.getElementById(
       SlamRunner.Controller.HtmlNames_.POET_NAV).style.display = 'block';
 
+  // Display the birds eye section.
+  document.getElementById(
+      SlamRunner.Controller.HtmlNames_.BIRDS_EYE).style.display = 'block';
+
   // Hide the setup section.
   document.getElementById(
       SlamRunner.Controller.HtmlNames_.SETUP).style.display = 'none';
@@ -145,6 +155,24 @@ SlamRunner.Controller.prototype.start_ = function() {
   }
 
   this.slam_.start();
+};
+
+
+SlamRunner.Controller.prototype.updateBirdsEyeView_ = function() {
+  while (this.currentRoundScores_.hasChildNodes()) {
+    this.currentRoundScores_.removeChild(this.currentRoundScores_.lastChild);
+  }
+  var poetList = this.slam_.getCurrentRoundPoets();
+  for (var i = 0; i < poetList.length; i++) {
+    var nextPoetLi = document.createElement('li');
+    nextPoetLi.textContent =
+        poetList[i].getName() +
+        ' ' +
+        SlamRunner.Model.Score.scoreToString(
+            poetList[i].getScoreByRound(
+                this.slam_.getCurrentRound()).getTotalScore());
+    this.currentRoundScores_.appendChild(nextPoetLi);
+  }
 };
 
 
@@ -195,6 +223,7 @@ SlamRunner.Controller.prototype.updateViewFromModel_ = function() {
         '';
 
     this.previousPoetLink_.style.display = this.slam_.canGoBack() ? 'inline' : 'none';
+    this.updateBirdsEyeView_();
   } else {
     this.setup_.setPoetList(this.slam_.getAllPoets());
   }
