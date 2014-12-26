@@ -89,6 +89,11 @@ SlamRunner.Model.Slam.prototype.getCurrentPoet = function() {
 };
 
 
+SlamRunner.Model.Slam.prototype.getCurrentPoetPlaceInRound = function() {
+  return this.currentPoet_;
+};
+
+
 SlamRunner.Model.Slam.prototype.getCurrentRound = function() {
   return this.currentRound_;
 };

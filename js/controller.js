@@ -162,9 +162,11 @@ SlamRunner.Controller.prototype.updateBirdsEyeView_ = function() {
     innerSpan.textContent =
         poetList[i].getName() +
         ' ' +
-        SlamRunner.Model.Score.scoreToString(
-            poetList[i].getScoreByRound(
-                this.slam_.getCurrentRound()).getTotalScore());
+        (i > this.slam_.getCurrentPoetPlaceInRound() ?
+         '' :
+         SlamRunner.Model.Score.scoreToString(
+             poetList[i].getScoreByRound(
+                 this.slam_.getCurrentRound()).getTotalScore()));
     nextPoetLi.appendChild(innerSpan);
     this.currentRoundScores_.appendChild(nextPoetLi);
   }
