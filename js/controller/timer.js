@@ -78,6 +78,13 @@ SlamRunner.Controller.Timer.prototype.onStartStopClick_ = function() {
 };
 
 
+SlamRunner.Controller.Timer.prototype.setTimeMs = function(timeMs) {
+  this.startTime_ = new Date();
+  this.stopTime_ = new Date(this.startTime_.getTime() + timeMs);
+  this.updateTimerFace_();
+};
+
+
 SlamRunner.Controller.Timer.prototype.timerTick_ = function() {
   if (this.startTime_ && !this.stopTime_) {
     this.updateTimerFace_();

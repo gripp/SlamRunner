@@ -174,6 +174,8 @@ SlamRunner.Controller.prototype.updateBirdsEyeView_ = function() {
 
 
 SlamRunner.Controller.prototype.updateModelFromView_ = function() {
+  this.slam_.getCurrentScore().setTimeMs(this.timer_.getTimeMs());
+
   // Update scores.
   var scores = [];
   for (var i = 0; i < this.scoreBoxes_.length; i++) {
@@ -189,7 +191,6 @@ SlamRunner.Controller.prototype.updateModelFromView_ = function() {
 
   this.slam_.getCurrentPoet().addOrUpdateScoresByRound(
       scores, this.slam_.getCurrentRound());
-  this.slam_.getCurrentScore().setTimeMs(this.timer_.getTimeMs());
 };
 
 
@@ -219,6 +220,7 @@ SlamRunner.Controller.prototype.updateViewFromModel_ = function() {
         '';
 
     this.previousPoetLink_.style.display = this.slam_.canGoBack() ? 'inline' : 'none';
+    this.timer_.setTimeMs(currentScoreObj.getTime().getTimeMs());
     this.updateBirdsEyeView_();
   } else {
     this.setup_.setPoetList(this.slam_.getAllPoets());
