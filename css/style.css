@@ -139,3 +139,13 @@ span.current-poet {
   background-color: #1b90de;
   color: #f0dca6;
 }
+
+div#feedback {
+  font-size: .85em;
+  font-weight: bold;
+  padding: .15em;
+
+  position: absolute;
+  bottom: 0;
+  right: 0;
+}
