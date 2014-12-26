@@ -100,11 +100,17 @@ ol#final-scores {
   margin-bottom: 1em;
   margin-left: auto;
   margin-right: auto;
+  margin-top: 0;
   width: 28em;
+}
+
+div#birds-eye ol {
+  margin-top: 0;
 }
 
 div#poet-nav {
   background-color: #1b90de;
+  margin-bottom: 1em;
   margin-left: auto;
   margin-right: auto;
   padding: .25em;
@@ -127,4 +133,9 @@ div#poet-nav div#poet-nav-left {
 div#poet-nav div#poet-nav-right {
   border-left: 1px solid #705d70;
   text-align: left;
+}
+
+span.current-poet {
+  background-color: #1b90de;
+  color: #f0dca6;
 }
