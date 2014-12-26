@@ -124,7 +124,7 @@ SlamRunner.Model.Slam.prototype.hasStarted = function() {
 
 
 SlamRunner.Model.Slam.prototype.rewind = function() {
-  this.currentPoet_ = Math.min(0, this.currentPoet_ - 1);
+  this.currentPoet_ = Math.max(0, this.currentPoet_ - 1);
   document.dispatchEvent(new Event(SlamRunner.Model.Slam.Event.UPDATED));
 };
 
