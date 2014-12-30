@@ -11,7 +11,7 @@ class Handler(webapp2.RequestHandler):
       extensions=['jinja2.ext.autoescape'],
       autoescape=True)
 
-  def _WriteTemplate(self, template, args):
+  def _write_template(self, template, args):
     """Writes given arguments out to the given template in an HTTP response."""
     template = self._JINJA_ENVIRONMENT.get_template('/html/%s' % template)
     self.response.write(template.render(args))

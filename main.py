@@ -6,4 +6,4 @@ import webapp2
 
 class Handler(base.Handler):
   def get(self):
-    self._WriteTemplate('index.html', {})
+    self._write_template('index.html', {})

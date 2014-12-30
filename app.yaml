@@ -12,7 +12,7 @@ handlers:
   static_dir: js
 
 - url: /.*
-  script: slamRunner.app
+  script: slam_runner.app
   login: required
 
 libraries:
