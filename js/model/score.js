@@ -56,5 +56,5 @@ SlamRunner.Model.Score.prototype.setScores = function(scores) {
 
 SlamRunner.Model.Score.prototype.setTimeMs = function(time) {
   this.time_.setTimeMs(time);
-  document.dispatchEvent(new Event(SlamRunner.Model.Slam.Event.UPDATED));
+  document.dispatchEvent(new Event(SlamRunner.Model.Slam.Event.TIME_UPDATED));
 };

@@ -10,6 +10,7 @@ SlamRunner.Model.Slam = function() {
 SlamRunner.Model.Slam.Event = {
     ENDED: 'slm-ended',
     STARTED: 'slm-started',
+    TIME_UPDATED: 'slm-time-updated',
     UPDATED: 'slm-updated',
 };
 
