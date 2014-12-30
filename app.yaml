@@ -11,6 +11,10 @@ handlers:
 - url: /js
   static_dir: js
 
+- url: /admin/.*
+  script: slam_runner.app
+  login: admin 
+
 - url: /.*
   script: slam_runner.app
   login: required
