@@ -21,10 +21,10 @@ def add_new_user(email):
 def _get_all_users():
   users = memcache.get(_ALL_USERS_KEY)
   if not users:
-    users = [user.email for user in BetaUser.query().fetch()]
+    users = [user.email.lower() for user in BetaUser.query().fetch()]
     memcache.set(_ALL_USERS_KEY, users)
   return users
 
 
 def is_beta_user():
-  return users.get_current_user().email() in _get_all_users()
+  return users.get_current_user().email().lower() in _get_all_users()
