@@ -40,6 +40,9 @@ SlamRunner.Controller.HtmlNames_ = {
     ADD_POET_BUTTON: 'add-poet-button',
     ADD_POETS_LIST: 'add-poets-list',
     BIRDS_EYE: 'birds-eye',
+    BIRDS_EYE_NAME: 'brds-name',
+    BIRDS_EYE_SCORES: 'brds-scores',
+    BIRDS_EYE_TOTAL: 'brds-total-score',
     CURRENT_POET: 'current-poet',
     CURRENT_ROUND: 'current-round-number',
     CURRENT_ROUND_SCORES: 'current-round-scores',
@@ -74,6 +77,39 @@ SlamRunner.Controller.prototype.addPoet_ = function() {
 
   this.setup_.clearEnteredPoetName();
   this.slam_.addPoet(poetName);
+};
+
+
+SlamRunner.Controller.prototype.createBirdsEyePoetSpan_ =
+    function(poetModel, placeInRound) {
+  var poet = document.createElement('span');
+
+  var name = document.createElement('span');
+  name.className = SlamRunner.Controller.HtmlNames_.BIRDS_EYE_NAME + (
+      this.slam_.getCurrentPoet().getName() == poetModel.getName() ?
+      ' ' + SlamRunner.Controller.HtmlNames_.CURRENT_POET :
+      '');
+  name.textContent = poetModel.getName();
+  poet.appendChild(name);
+
+  var scores = document.createElement('span');
+  scores.className = SlamRunner.Controller.HtmlNames_.BIRDS_EYE_SCORES;
+
+  for (var i = 0; i < this.slam_.getCurrentRound() + 1; i++) {
+    var nextScore = document.createElement('span');
+    nextScore.textContent = SlamRunner.Model.Score.scoreToString(
+        poetModel.getScoreByRound(i).getTotalScore());
+    scores.appendChild(nextScore);
+  }
+
+  var totalScore = document.createElement('span');
+  totalScore.className = SlamRunner.Controller.HtmlNames_.BIRDS_EYE_TOTAL;
+  totalScore.textContent = 'Total: ' + SlamRunner.Model.Score.scoreToString(
+      poetModel.getCumulativeScore());
+  scores.appendChild(totalScore);
+
+  poet.appendChild(scores);
+  return poet;
 };
 
 
@@ -157,20 +193,7 @@ SlamRunner.Controller.prototype.updateBirdsEyeView_ = function() {
   var poetList = this.slam_.getCurrentRoundPoets();
   for (var i = 0; i < poetList.length; i++) {
     var nextPoetLi = document.createElement('li');
-    var innerSpan = document.createElement('span');
-    innerSpan.className =
-        this.slam_.getCurrentPoet().getName() == poetList[i].getName() ?
-        SlamRunner.Controller.HtmlNames_.CURRENT_POET :
-        '';
-    innerSpan.textContent =
-        poetList[i].getName() +
-        ' ' +
-        (i > this.slam_.getCurrentPoetPlaceInRound() ?
-         '' :
-         SlamRunner.Model.Score.scoreToString(
-             poetList[i].getScoreByRound(
-                 this.slam_.getCurrentRound()).getTotalScore()));
-    nextPoetLi.appendChild(innerSpan);
+    nextPoetLi.appendChild(this.createBirdsEyePoetSpan_(poetList[i], i));
     this.currentRoundScores_.appendChild(nextPoetLi);
   }
 };

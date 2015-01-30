@@ -104,8 +104,34 @@ ol#final-scores {
   width: 28em;
 }
 
+div#birds-eye-inner {
+  display: inline-block;
+  text-align: left;
+}
+
+div#birds-eye {
+  text-align: center;
+  width: auto;
+}
+
 div#birds-eye ol {
   margin-top: 0;
+}
+
+span.brds-name {
+  display: inline-block;
+  margin-right: 1em;
+  width: 10em;
+}
+
+span.brds-scores span {
+  display: inline-block;
+  margin-right: 2em;
+}
+
+span.brds-scores span.brds-total-score {
+  font-style: italic;
+  margin-right: 0;
 }
 
 div#poet-nav {
